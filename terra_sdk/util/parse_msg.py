@@ -127,6 +127,7 @@ parse_msg = create_demux(
         *wasm_msgs,
         *ibc_msgs,
         *ibc_transfer_msgs,
+        *authz_msgs,
     ]
 )
 parse_proto = create_demux_proto(
