@@ -327,5 +327,19 @@ parse_proto = create_demux_proto(
         *wasm_protos,
         *ibc_protos,
         *ibc_transfer_protos,
+    ],
+    [
+        *authz_msgs,
+        *bank_msgs,
+        *distribution_msgs,
+        *feegrant_msgs,
+        *gov_msgs,
+        *market_msgs,
+        *oracle_msgs,
+        *slashing_msgs,
+        *staking_msgs,
+        *wasm_msgs,
+        *ibc_msgs,
+        *ibc_transfer_msgs,
     ]
 )
