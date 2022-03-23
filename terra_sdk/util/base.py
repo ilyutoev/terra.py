@@ -33,11 +33,11 @@ def create_demux(inputs: List) -> Callable[[Dict[str, Any]], Any]:
 
 
 def create_demux_proto(protos: List[Tuple[str, Type[Message]]], msg_types: List[Type['Msg']]) -> Callable[[Any_pb], 'Msg']:
-    proto_table = {i[0]: i[1]().parse for i in protos}
+    proto_table = {i[0]: i[1] for i in protos}
     msg_handlers = {t.__name__: t.from_proto for t in msg_types}
 
     def from_proto(data: Any_pb) -> 'Msg':
-        pb = proto_table[data.type_url](data.value)
+        pb = proto_table[data.type_url]().parse(data.value)
         return msg_handlers[type(pb).__name__](pb)
 
     return from_proto

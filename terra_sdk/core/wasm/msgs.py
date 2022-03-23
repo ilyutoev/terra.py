@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import base64
 import copy
-import json
 from typing import Optional
 
 import attr
@@ -21,7 +20,7 @@ from terra_proto.terra.wasm.v1beta1 import MsgStoreCode as MsgStoreCode_pb
 from terra_proto.terra.wasm.v1beta1 import (
     MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb,
 )
-from terra_sdk.util.converter import bytes_to_dict
+from terra_sdk.util.converter import bytes_to_dict, dict_to_bytes
 from terra_sdk.util.remove_none import remove_none
 
 from terra_sdk.core import AccAddress, Coins
@@ -191,7 +190,7 @@ class MsgInstantiateContract(Msg):
             sender=self.sender,
             admin=self.admin,
             code_id=self.code_id,
-            init_msg=bytes(json.dumps(self.init_msg), "utf-8"),
+            init_msg=dict_to_bytes(self.init_msg),
             init_coins=self.init_coins.to_proto(),
         )
 
@@ -252,7 +251,7 @@ class MsgExecuteContract(Msg):
         return MsgExecuteContract_pb(
             sender=self.sender,
             contract=self.contract,
-            execute_msg=bytes(json.dumps(self.execute_msg), "utf-8"),
+            execute_msg=dict_to_bytes(self.execute_msg),
             coins=self.coins.to_proto(),
         )
 
@@ -316,7 +315,7 @@ class MsgMigrateContract(Msg):
             admin=self.admin,
             contract=self.contract,
             new_code_id=self.new_code_id,
-            migrate_msg=bytes(json.dumps(self.migrate_msg), "utf-8"),
+            migrate_msg=dict_to_bytes(self.migrate_msg),
         )
 
     @classmethod
