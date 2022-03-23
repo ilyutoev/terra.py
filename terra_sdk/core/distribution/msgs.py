@@ -178,9 +178,9 @@ class MsgWithdrawValidatorCommission(Msg):
 
     @classmethod
     def from_proto(
-        cls, data: MsgWithdrawValidatorCommission_pb
+        cls, proto: MsgWithdrawValidatorCommission_pb
     ) -> MsgWithdrawValidatorCommission:
-        return cls(validator_address=data["validator_address"])
+        return cls(proto.validator_address)
 
 
 @attr.s

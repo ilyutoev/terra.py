@@ -54,7 +54,7 @@ class MsgStoreCode(Msg):
     """"""
 
     sender: AccAddress = attr.ib()
-    wasm_byte_code: str = attr.ib()
+    wasm_byte_code: bytes = attr.ib()
 
     def to_amino(self) -> dict:
         return {
@@ -68,7 +68,7 @@ class MsgStoreCode(Msg):
 
     def to_proto(self) -> MsgStoreCode_pb:
         return MsgStoreCode_pb(
-            sender=self.sender, wasm_byte_code=base64.b64decode(self.wasm_byte_code)
+            sender=self.sender, wasm_byte_code=self.wasm_byte_code
         )
 
     @classmethod
@@ -324,7 +324,7 @@ class MsgMigrateContract(Msg):
             admin=proto.admin,
             contract=proto.contract,
             new_code_id=proto.new_code_id,
-            migrate_msg=proto.migrate_msg,
+            migrate_msg=bytes_to_dict(proto.migrate_msg),
         )
 
 
