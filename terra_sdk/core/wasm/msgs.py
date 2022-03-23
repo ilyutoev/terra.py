@@ -21,13 +21,14 @@ from terra_proto.terra.wasm.v1beta1 import MsgStoreCode as MsgStoreCode_pb
 from terra_proto.terra.wasm.v1beta1 import (
     MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb,
 )
-from betterproto.lib.google.protobuf import Any as Any_pb
+from terra_sdk.util.converter import bytes_to_dict
+from terra_sdk.util.remove_none import remove_none
 
 from terra_sdk.core import AccAddress, Coins
 from terra_sdk.core.msg import Msg
 from terra_sdk.util.json import dict_to_data
-from terra_sdk.util.remove_none import remove_none
-from typing import Any, Dict
+
+
 __all__ = [
     "MsgStoreCode",
     "MsgMigrateCode",
@@ -200,7 +201,7 @@ class MsgInstantiateContract(Msg):
             sender=proto.sender,
             admin=proto.admin,
             code_id=proto.code_id,
-            init_msg=remove_none(proto.init_msg),
+            init_msg=bytes_to_dict(proto.init_msg),
             init_coins=Coins.from_proto(proto.init_coins),
         )
 
@@ -260,14 +261,9 @@ class MsgExecuteContract(Msg):
         return cls(
             sender=proto.sender,
             contract=proto.contract,
-            execute_msg=cls._bts_to_dict(proto.execute_msg),
+            execute_msg=bytes_to_dict(proto.execute_msg),
             coins=Coins.from_proto(proto.coins),
         )
-
-    @staticmethod
-    def _bts_to_dict(obj: bytes) -> Dict[str, Any]:
-        res = json.loads(obj.decode())
-        return remove_none(res)
 
 
 @attr.s
