@@ -107,7 +107,7 @@ class MsgWithdrawDelegatorReward(Msg):
             "type": self.type_amino,
             "value": {
                 "delegator_address": self.delegator_address,
-                "withdraw_address": self.withdraw_address,
+                "withdraw_address": self.validator_address,
             },
         }
 
@@ -115,7 +115,7 @@ class MsgWithdrawDelegatorReward(Msg):
         return {
             "@type": self.type_url,
             "delegator_address": self.delegator_address,
-            "withdraw_address": self.withdraw_address,
+            "validator_address": self.validator_address,
         }
 
     @classmethod
@@ -136,8 +136,8 @@ class MsgWithdrawDelegatorReward(Msg):
         cls, data: MsgWithdrawDelegatorReward_pb
     ) -> MsgWithdrawDelegatorReward:
         return cls(
-            delegator_address=data["delegator_address"],
-            validator_address=data["validator_address"],
+            delegator_address=data.delegator_address,
+            validator_address=data.validator_address,
         )
 
 
