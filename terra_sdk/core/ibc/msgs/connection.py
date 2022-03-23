@@ -145,20 +145,20 @@ class MsgConnectionOpenTry(Msg):
     @classmethod
     def from_proto(cls, proto: MsgConnectionOpenTry_pb) -> MsgConnectionOpenTry:
         return cls(
-            client_id=proto["client_id"],
-            previous_connection_id=proto["previous_connection_id"],
-            client_state=proto["client_state"],
-            counterparty=Counterparty.from_proto(proto["counterparty"]),
-            delay_period=proto["delay_period"],
+            client_id=proto.client_id,
+            previous_connection_id=proto.previous_connection_id,
+            client_state=proto.client_state.to_dict(),
+            counterparty=Counterparty.from_proto(proto.counterparty),
+            delay_period=proto.delay_period,
             counterparty_versions=[
-                Version.from_proto(ver) for ver in proto["counterparty_versions"]
+                Version.from_proto(ver) for ver in proto.counterparty_versions
             ],
-            proof_height=Height.from_proto(proto["proof_height"]),
-            proof_init=proto["proof_init"],
-            proof_client=proto["proof_client"],
-            proof_consensus=proto["proof_consensus"],
-            consensus_height=Height.from_proto(proto["consensus_height"]),
-            signer=proto["signer"],
+            proof_height=Height.from_proto(proto.proof_height),
+            proof_init=proto.proof_init,
+            proof_client=proto.proof_client,
+            proof_consensus=proto.proof_consensus,
+            consensus_height=Height.from_proto(proto.consensus_height),
+            signer=proto.signer,
         )
 
 
