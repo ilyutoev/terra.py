@@ -1,9 +1,10 @@
-from datetime import datetime
-from typing import Dict, Any
 import json
+from datetime import datetime
+from typing import Any, Dict
+
 from .remove_none import remove_none
 
-__all__ = ['to_isoformat', 'bytes_to_dict', 'dict_to_bytes']
+__all__ = ["to_isoformat", "bytes_to_dict", "dict_to_bytes"]
 
 
 def to_isoformat(dt: datetime) -> str:
@@ -15,9 +16,9 @@ def to_isoformat(dt: datetime) -> str:
 
 
 def bytes_to_dict(obj: bytes) -> Dict[str, Any]:
-    res = json.loads(obj.decode('utf-8'))
+    res = json.loads(obj.decode("utf-8"))
     return remove_none(res)
 
 
 def dict_to_bytes(obj: Dict[str, Any]) -> bytes:
-    return json.dumps(obj).encode('utf-8')
+    return json.dumps(obj).encode("utf-8")

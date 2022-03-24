@@ -1,5 +1,7 @@
-from boltons.iterutils import remap  # type: ignore
 from typing import Any, Dict
+
+from boltons.iterutils import remap  # type: ignore
+
 __all__ = ["remove_none"]
 
 

@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
-from terra_proto.cosmos.distribution.v1beta1 import (
-    CommunityPoolSpendProposal as CommunityPoolSpendProposal_pb,
-)
-from typing import cast
+from terra_proto.cosmos.distribution.v1beta1 import \
+    CommunityPoolSpendProposal as CommunityPoolSpendProposal_pb
+
 from terra_sdk.core import AccAddress, Coins
 from terra_sdk.util.base import BaseTerraData
 
@@ -65,7 +66,9 @@ class CommunityPoolSpendProposal(BaseTerraData):
         }
 
     @classmethod
-    def from_proto(cls, proto: CommunityPoolSpendProposal_pb) -> CommunityPoolSpendProposal_pb:
+    def from_proto(
+        cls, proto: CommunityPoolSpendProposal_pb
+    ) -> CommunityPoolSpendProposal_pb:
         return cls(
             title=proto.title,
             description=proto.description,

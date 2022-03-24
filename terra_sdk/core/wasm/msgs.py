@@ -7,26 +7,24 @@ import copy
 from typing import Optional
 
 import attr
-from terra_proto.terra.wasm.v1beta1 import (
-    MsgClearContractAdmin as MsgClearContractAdmin_pb,
-)
-from terra_proto.terra.wasm.v1beta1 import MsgExecuteContract as MsgExecuteContract_pb
-from terra_proto.terra.wasm.v1beta1 import (
-    MsgInstantiateContract as MsgInstantiateContract_pb,
-)
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgClearContractAdmin as MsgClearContractAdmin_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgExecuteContract as MsgExecuteContract_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgInstantiateContract as MsgInstantiateContract_pb
 from terra_proto.terra.wasm.v1beta1 import MsgMigrateCode as MsgMigrateCode_pb
-from terra_proto.terra.wasm.v1beta1 import MsgMigrateContract as MsgMigrateContract_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgMigrateContract as MsgMigrateContract_pb
 from terra_proto.terra.wasm.v1beta1 import MsgStoreCode as MsgStoreCode_pb
-from terra_proto.terra.wasm.v1beta1 import (
-    MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb,
-)
-from terra_sdk.util.converter import bytes_to_dict, dict_to_bytes
-from terra_sdk.util.remove_none import remove_none
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb
 
 from terra_sdk.core import AccAddress, Coins
 from terra_sdk.core.msg import Msg
+from terra_sdk.util.converter import bytes_to_dict, dict_to_bytes
 from terra_sdk.util.json import dict_to_data
-
+from terra_sdk.util.remove_none import remove_none
 
 __all__ = [
     "MsgStoreCode",
@@ -67,9 +65,7 @@ class MsgStoreCode(Msg):
         return cls(sender=data["sender"], wasm_byte_code=data["wasm_byte_code"])
 
     def to_proto(self) -> MsgStoreCode_pb:
-        return MsgStoreCode_pb(
-            sender=self.sender, wasm_byte_code=self.wasm_byte_code
-        )
+        return MsgStoreCode_pb(sender=self.sender, wasm_byte_code=self.wasm_byte_code)
 
     @classmethod
     def from_proto(cls, proto: MsgStoreCode_pb) -> MsgStoreCode:

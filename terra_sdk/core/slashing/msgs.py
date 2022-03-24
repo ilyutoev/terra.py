@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import attr
 from terra_proto.cosmos.slashing.v1beta1 import MsgUnjail as MsgUnjail_pb
 
 from terra_sdk.core import ValAddress
 from terra_sdk.core.msg import Msg
-from typing import cast
+
 __all__ = ["MsgUnjail"]
 
 
@@ -28,7 +30,10 @@ class MsgUnjail(Msg):
     validator_addr: ValAddress = attr.ib()
 
     def to_amino(self) -> dict:
-        return {"type": self.type_amino, "value": {"validator_addr": self.validator_addr}}
+        return {
+            "type": self.type_amino,
+            "value": {"validator_addr": self.validator_addr},
+        }
 
     @classmethod
     def from_data(cls, data: dict) -> MsgUnjail:

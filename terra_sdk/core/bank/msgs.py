@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, List
+from typing import Any, List, cast
 
 from terra_proto.cosmos.bank.v1beta1 import Input as Input_pb
 from terra_proto.cosmos.bank.v1beta1 import MsgMultiSend as MsgMultiSend_pb
@@ -12,7 +12,7 @@ from terra_proto.cosmos.bank.v1beta1 import Output as Output_pb
 from terra_sdk.core import AccAddress, Coins
 from terra_sdk.core.msg import Msg
 from terra_sdk.util.json import JSONSerializable
-from typing import cast
+
 __all__ = ["MsgSend", "MsgMultiSend", "MultiSendInput", "MultiSendOutput"]
 
 import attr
@@ -114,7 +114,9 @@ class MultiSendInput(JSONSerializable):
 
     @classmethod
     def from_proto(cls, proto: Input_pb) -> MultiSendInput:
-        return cls(address=cast(AccAddress, proto.address), coins=Coins.from_proto(proto.coins))
+        return cls(
+            address=cast(AccAddress, proto.address), coins=Coins.from_proto(proto.coins)
+        )
 
     def to_proto(self) -> Input_pb:
         proto = Input_pb()
@@ -151,7 +153,9 @@ class MultiSendOutput(JSONSerializable):
 
     @classmethod
     def from_proto(cls, proto: Output_pb) -> MultiSendOutput:
-        return cls(address=cast(AccAddress, proto.address), coins=Coins.from_proto(proto.coins))
+        return cls(
+            address=cast(AccAddress, proto.address), coins=Coins.from_proto(proto.coins)
+        )
 
     def to_proto(self) -> Output_pb:
         proto = Output_pb()

@@ -40,7 +40,7 @@ class MerklePrefix(JSONSerializable):
 
     @classmethod
     def from_data(cls, data: dict) -> MerklePrefix:
-        return cls(key_prefix=data['key_prefix'])
+        return cls(key_prefix=data["key_prefix"])
 
     def to_proto(self) -> MerklePrefix_pb:
         return MerklePrefix_pb(key_prefix=self.key_prefix)

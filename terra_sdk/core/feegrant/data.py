@@ -7,15 +7,14 @@ from typing import List, Optional
 
 import attr
 from attr import converters
-
-from terra_proto.cosmos.feegrant.v1beta1 import (
-    AllowedMsgAllowance as AllowedMsgAllowance_pb,
-)
-from terra_proto.cosmos.feegrant.v1beta1 import BasicAllowance as BasicAllowance_pb
-from terra_proto.cosmos.feegrant.v1beta1 import (
-    PeriodicAllowance as PeriodicAllowance_pb,
-)
 from betterproto.lib.google.protobuf import Any as Any_pb
+from terra_proto.cosmos.feegrant.v1beta1 import \
+    AllowedMsgAllowance as AllowedMsgAllowance_pb
+from terra_proto.cosmos.feegrant.v1beta1 import \
+    BasicAllowance as BasicAllowance_pb
+from terra_proto.cosmos.feegrant.v1beta1 import \
+    PeriodicAllowance as PeriodicAllowance_pb
+
 from terra_sdk.core import Coins
 from terra_sdk.util.converter import to_isoformat
 from terra_sdk.util.json import JSONSerializable
@@ -65,10 +64,15 @@ class Allowance(JSONSerializable, ABC):  # (BasicAllowance, PeriodicAllowance):
         if proto.type_url == BasicAllowance.type_url:
             return BasicAllowance.from_proto(BasicAllowance_pb().parse(proto.value))
         elif proto.type_url == PeriodicAllowance.type_url:
-            return PeriodicAllowance.from_proto(PeriodicAllowance_pb().parse(proto.value))
+            return PeriodicAllowance.from_proto(
+                PeriodicAllowance_pb().parse(proto.value)
+            )
         else:
             # workaround for incorrectly parsed AnyPb of basic allowance
-            return BasicAllowance.from_proto(BasicAllowance_pb().parse(proto.SerializeToString()))
+            return BasicAllowance.from_proto(
+                BasicAllowance_pb().parse(proto.SerializeToString())
+            )
+
 
 @attr.s
 class BasicAllowance(Allowance):

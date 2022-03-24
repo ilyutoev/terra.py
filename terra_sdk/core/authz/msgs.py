@@ -70,7 +70,7 @@ class MsgExecAuthorized(Msg):
         value = amino["value"]
         return cls(
             grantee=value["grantee"],
-            msgs=[Msg.from_amino(msg) for msg in value["msgs"]]
+            msgs=[Msg.from_amino(msg) for msg in value["msgs"]],
         )
 
 
@@ -133,7 +133,7 @@ class MsgGrantAuthorization(Msg):
         return cls(
             granter=proto.granter,
             grantee=proto.grantee,
-            grant=AuthorizationGrant.from_proto(proto.grant)
+            grant=AuthorizationGrant.from_proto(proto.grant),
         )
 
     @classmethod
@@ -142,7 +142,7 @@ class MsgGrantAuthorization(Msg):
         return cls(
             grantee=value["grantee"],
             granter=value["granter"],
-            grant=AuthorizationGrant.from_amino(value["grant"])
+            grant=AuthorizationGrant.from_amino(value["grant"]),
         )
 
 

@@ -2,24 +2,24 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, cast
 
 import attr
-from terra_proto.cosmos.staking.v1beta1 import (
-    MsgBeginRedelegate as MsgBeginRedelegate_pb,
-)
-from terra_proto.cosmos.staking.v1beta1 import (
-    MsgCreateValidator as MsgCreateValidator_pb,
-)
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgBeginRedelegate as MsgBeginRedelegate_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgCreateValidator as MsgCreateValidator_pb
 from terra_proto.cosmos.staking.v1beta1 import MsgDelegate as MsgDelegate_pb
-from terra_proto.cosmos.staking.v1beta1 import MsgEditValidator as MsgEditValidator_pb
-from terra_proto.cosmos.staking.v1beta1 import MsgUndelegate as MsgUndelegate_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgEditValidator as MsgEditValidator_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgUndelegate as MsgUndelegate_pb
 
 from terra_sdk.core import AccAddress, Coin, Dec, ValAddress, ValConsPubKey
 from terra_sdk.core.msg import Msg
 
 from .data import CommissionRates, Description
-from typing import cast
+
 __all__ = [
     "MsgBeginRedelegate",
     "MsgDelegate",

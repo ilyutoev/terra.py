@@ -1,12 +1,10 @@
 from terra_sdk.client.lcd.api.tx import CreateTxOptions
 from terra_sdk.client.localterra import LocalTerra
 from terra_sdk.core import Coin, Coins
-from terra_sdk.core.distribution import (
-    MsgFundCommunityPool,
-    MsgSetWithdrawAddress,
-    MsgWithdrawDelegatorReward,
-    MsgWithdrawValidatorCommission,
-)
+from terra_sdk.core.distribution import (MsgFundCommunityPool,
+                                         MsgSetWithdrawAddress,
+                                         MsgWithdrawDelegatorReward,
+                                         MsgWithdrawValidatorCommission)
 
 
 def main():

@@ -36,7 +36,7 @@ async def main():
         )
     )
 
-    encoded =tx.encode()
+    encoded = tx.encode()
     print(f"encoded...{encoded}")
 
     print("=" * 64)
