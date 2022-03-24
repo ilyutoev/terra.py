@@ -14,7 +14,7 @@ from terra_proto.cosmos.distribution.v1beta1 import \
 
 from terra_sdk.core import AccAddress, Coins, ValAddress
 from terra_sdk.core.msg import Msg
-
+from typing import cast
 __all__ = [
     "MsgSetWithdrawAddress",
     "MsgWithdrawDelegatorReward",
@@ -72,10 +72,10 @@ class MsgSetWithdrawAddress(Msg):
         )
 
     @classmethod
-    def from_proto(cls, data: MsgSetWithdrawAddress_pb) -> MsgSetWithdrawAddress:
+    def from_proto(cls, proto: MsgSetWithdrawAddress_pb) -> MsgSetWithdrawAddress:
         return cls(
-            delegator_address=data["delegator_address"],
-            withdraw_address=data["withdraw_address"],
+            delegator_address=cast(AccAddress, proto.delegator_address),
+            withdraw_address=cast(AccAddress, proto.withdraw_address),
         )
 
 

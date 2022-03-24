@@ -1,6 +1,6 @@
 from terra_sdk.client.lcd.api.tx import CreateTxOptions
 from terra_sdk.client.localterra import LocalTerra
-from terra_sdk.core.authz import (MsgExecAuthorized, MsgGrant,
+from terra_sdk.core.authz import (MsgExec, MsgGrant,
                                   MsgRevokeAuthorization)
 
 
@@ -18,7 +18,7 @@ def main():
         )
         """,
     )
-    msgE = MsgExecAuthorized()
+    msgE = MsgExec()
     msgR = MsgRevokeAuthorization()
 
     tx = test1.create_and_sign_tx(CreateTxOptions(msgs=[msgG]))

@@ -184,7 +184,7 @@ class SimplePublicKey(PublicKey):
         return out
 
     def raw_address(self) -> bytes:
-        return address_from_public_key(self.key)
+        return address_from_public_key(self)
 
     def address(self) -> str:
         return get_bech("terra", self.raw_address())
@@ -200,7 +200,7 @@ class ValConsPubKey(PublicKey):
     type_url = "/cosmos.crypto.ed25519.PubKey"
     """an ed25519 tendermint public key type."""
 
-    key: str = attr.ib()
+    key: bytes = attr.ib()
 
     def to_amino(self) -> dict:
         return {"type": self.type_amino, "value": self.key}
@@ -224,7 +224,7 @@ class ValConsPubKey(PublicKey):
         return self.type_url
 
     def to_proto(self) -> ValConsPubKey_pb:
-        return ValConsPubKey_pb(key=base64.b64encode(self.key))
+        return ValConsPubKey_pb(key=self.key)
 
     def pack_any(self) -> Any_pb:
         return Any_pb(type_url=self.type_url, value=bytes(self.to_proto()))
