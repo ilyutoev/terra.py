@@ -103,11 +103,11 @@ class Tx(JSONSerializable):
         c = cls.from_proto(proto)
         return c
 
-    def to_amino(self) -> str:
+    def encode(self) -> str:
         return base64.b64encode(self.to_proto().SerializeToString()).decode()
 
     @classmethod
-    def from_amino(cls, amino: str) -> Tx:
+    def from_encoded(cls, amino: str) -> Tx:
         return cls.from_bytes(base64.b64decode(amino))
 
     def append_empty_signatures(self, signers: List[SignerData]):
