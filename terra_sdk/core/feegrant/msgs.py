@@ -12,7 +12,7 @@ from terra_proto.cosmos.feegrant.v1beta1 import (
 
 from terra_sdk.core import AccAddress
 from terra_sdk.core.msg import Msg
-
+from typing import cast
 from .data import Allowance
 
 __all__ = ["MsgGrantAllowance", "MsgRevokeAllowance"]
@@ -62,8 +62,8 @@ class MsgGrantAllowance(Msg):
     @classmethod
     def from_proto(cls, proto: MsgGrantAllowance_pb) -> MsgGrantAllowance:
         return cls(
-            granter=proto.granter,
-            grantee=proto.grantee,
+            granter=cast(AccAddress, proto.granter),
+            grantee=cast(AccAddress, proto.grantee),
             allowance=Allowance.from_proto(proto.allowance),
         )
 

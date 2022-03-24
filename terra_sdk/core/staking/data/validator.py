@@ -154,6 +154,16 @@ class Description(JSONSerializable):
             data.get("security_contact"),
         )
 
+    @classmethod
+    def from_proto(cls, proto: Description_pb) -> Description:
+        return cls(
+            moniker=proto.moniker,
+            identity=proto.identity,
+            website=proto.website,
+            details=proto.details,
+            security_contact=proto.security_contact,
+        )
+
     def to_proto(self) -> Description_pb:
         return Description_pb(
             moniker=self.moniker,

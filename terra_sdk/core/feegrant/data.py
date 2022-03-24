@@ -7,7 +7,7 @@ from typing import List, Optional
 
 import attr
 from attr import converters
-from dateutil import parser
+
 from terra_proto.cosmos.feegrant.v1beta1 import (
     AllowedMsgAllowance as AllowedMsgAllowance_pb,
 )
@@ -15,7 +15,7 @@ from terra_proto.cosmos.feegrant.v1beta1 import BasicAllowance as BasicAllowance
 from terra_proto.cosmos.feegrant.v1beta1 import (
     PeriodicAllowance as PeriodicAllowance_pb,
 )
-
+from betterproto.lib.google.protobuf import Any as Any_pb
 from terra_sdk.core import Coins
 from terra_sdk.util.converter import to_isoformat
 from terra_sdk.util.json import JSONSerializable
@@ -23,17 +23,62 @@ from terra_sdk.util.json import JSONSerializable
 __all__ = ["BasicAllowance", "PeriodicAllowance", "AllowedMsgAllowance", "Allowance"]
 
 
+class Allowance(JSONSerializable, ABC):  # (BasicAllowance, PeriodicAllowance):
+    @property
+    @abstractmethod
+    def type_url(self):
+        pass
+
+    @property
+    @abstractmethod
+    def type_amino(self):
+        pass
+
+    @abstractmethod
+    def to_amino(self) -> dict:
+        pass
+
+    @abstractmethod
+    def to_data(self) -> dict:
+        pass
+
+    @abstractmethod
+    def to_proto(self) -> Any_pb:
+        pass
+
+    @classmethod
+    def from_data(cls, data: dict):
+        if data.get("@type") == BasicAllowance.type_url:
+            return BasicAllowance.from_data(data)
+        else:
+            return PeriodicAllowance.from_data(data)
+
+    @classmethod
+    def from_amino(cls, data: dict):
+        if data.get("type") == BasicAllowance.type_amino:
+            return BasicAllowance.from_amino(data)
+        else:
+            return PeriodicAllowance.from_amino(data)
+
+    @classmethod
+    def from_proto(cls, proto: Any_pb):
+        if proto.type_url == BasicAllowance.type_url:
+            return BasicAllowance.from_proto(BasicAllowance_pb().parse(proto.value))
+        elif proto.type_url == PeriodicAllowance.type_url:
+            return PeriodicAllowance.from_proto(PeriodicAllowance_pb().parse(proto.value))
+        else:
+            # workaround for incorrectly parsed AnyPb of basic allowance
+            return BasicAllowance.from_proto(BasicAllowance_pb().parse(proto.SerializeToString()))
+
 @attr.s
-class BasicAllowance(JSONSerializable):
+class BasicAllowance(Allowance):
     """
     BasicAllowance implements Allowance with a one-time grant of tokens
     that optionally expires. The grantee can use up to SpendLimit to cover fees.
     """
 
     spend_limit: Optional[Coins] = attr.ib(converter=converters.optional(Coins))
-    expiration: Optional[datetime] = attr.ib(
-        converter=converters.optional(parser.parse)
-    )
+    expiration: Optional[datetime] = attr.ib()
 
     type_amino = "feegrant/BasicAllowance"
     type_url = "/cosmos.feegrant.v1beta1.BasicAllowance"
@@ -73,7 +118,7 @@ class BasicAllowance(JSONSerializable):
         exp = data.get("expiration")
         return cls(
             spend_limit=Coins.from_data(sl) if sl else None,
-            expiration=exp if exp else None,
+            expiration=exp,
         )
 
     def to_proto(self) -> BasicAllowance_pb:
@@ -88,27 +133,37 @@ class BasicAllowance(JSONSerializable):
         exp = proto.expiration
         return cls(
             spend_limit=Coins.from_proto(sl) if sl else None,
-            expiration=exp if exp else None,
+            expiration=exp,
         )
 
 
 @attr.s
-class PeriodicAllowance(JSONSerializable):
+class PeriodicAllowance(Allowance):
     """
     PeriodicAllowance extends Allowance to allow for both a maximum cap,
      as well as a limit per time period.
     """
 
     basic: BasicAllowance = attr.ib()
-    period: int = attr.ib(converter=int)
+    period: float = attr.ib()
     period_spend_limit: Coins = attr.ib(converter=Coins)
     period_can_spend: Coins = attr.ib(converter=Coins)
-    period_reset: datetime = attr.ib(converter=parser.parse)
+    period_reset: datetime = attr.ib()
 
     type_amino = "feegrant/PeriodicAllowance"
     """"""
     type_url = "/cosmos.feegrant.v1beta1.PeriodicAllowance"
     """"""
+
+    def to_data(self) -> dict:
+        return {
+            "@type": self.type_url,
+            "basic": self.basic.to_data(),
+            "period": self.period,
+            "period_spend_limit": self.period_spend_limit.to_data(),
+            "period_can_spend": self.period_can_spend.to_data(),
+            "period_reset": self.period_reset,
+        }
 
     def to_amino(self) -> dict:
         return {
@@ -127,7 +182,7 @@ class PeriodicAllowance(JSONSerializable):
         data = amino.get("value")
         return cls(
             basic=BasicAllowance.from_amino(data.get("basic")),
-            period=int(data.get("period")),
+            period=float(data.get("period") or 0),
             period_spend_limit=Coins.from_amino(data.get("period_spend_limit")),
             period_can_spend=Coins.from_amino(data.get("period_can_spend")),
             period_reset=data.get("period_reset"),
@@ -156,9 +211,9 @@ class PeriodicAllowance(JSONSerializable):
     def from_proto(cls, proto: PeriodicAllowance_pb) -> PeriodicAllowance:
         return cls(
             basic=BasicAllowance.from_proto(proto.basic),
-            period=proto.period.seconds(),
-            period_spend_limit=proto.period_spend_limit,
-            period_can_spend=proto.period_can_spend,
+            period=proto.period.total_seconds(),
+            period_spend_limit=Coins.from_proto(proto.period_spend_limit),
+            period_can_spend=Coins.from_proto(proto.period_can_spend),
             period_reset=proto.period_reset,
         )
 
@@ -198,48 +253,3 @@ class AllowedMsgAllowance(JSONSerializable):
         return AllowedMsgAllowance_pb(
             allowance=self.allowance.to_proto(), allowed_messages=self.allowed_messages
         )
-
-
-class Allowance(JSONSerializable, ABC):  # (BasicAllowance, PeriodicAllowance):
-    @property
-    @abstractmethod
-    def type_url(self):
-        pass
-
-    @property
-    @abstractmethod
-    def type_amino(self):
-        pass
-
-    @abstractmethod
-    def to_amino(self) -> dict:
-        pass
-
-    @abstractmethod
-    def to_data(self) -> dict:
-        pass
-
-    @abstractmethod
-    def to_proto(self) -> dict:
-        pass
-
-    @classmethod
-    def from_data(cls, data: dict):
-        if data.get("@type") == BasicAllowance.type_url:
-            return BasicAllowance.from_data(data)
-        else:
-            return PeriodicAllowance.from_data(data)
-
-    @classmethod
-    def from_amino(cls, data: dict):
-        if data.get("type") == BasicAllowance.type_amino:
-            return BasicAllowance.from_amino(data)
-        else:
-            return PeriodicAllowance.from_amino(data)
-
-    @classmethod
-    def from_proto(cls, data: dict):
-        if data.get("@type") == BasicAllowance.type_url:
-            return BasicAllowance.from_proto(data)
-        else:
-            return PeriodicAllowance.from_proto(data)

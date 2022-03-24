@@ -11,7 +11,7 @@ from terra_sdk.core import AccAddress, Coins
 from terra_sdk.core.msg import Msg
 
 from .data import Content, VoteOption
-
+from typing import cast
 __all__ = ["MsgSubmitProposal", "MsgDeposit", "MsgVote"]
 
 
@@ -75,11 +75,11 @@ class MsgSubmitProposal(Msg):
     @classmethod
     def from_proto(cls, proto: MsgSubmitProposal_pb) -> MsgSubmitProposal:
         from terra_sdk.util.parse_content import parse_content_proto
-        content = parse_content_proto(proto.content)
+
         return cls(
-            content=content,
-            initial_deposit=Coins.from_proto(proto["initial_deposit"]),
-            proposer=proto["proposer"],
+            content=parse_content_proto(proto.content),
+            initial_deposit=Coins.from_proto(proto.initial_deposit),
+            proposer=cast(AccAddress, proto.proposer),
         )
 
 
@@ -216,7 +216,7 @@ class MsgVote(Msg):
 
     def to_proto(self) -> MsgVote_pb:
         return MsgVote_pb(
-            proposal_id=self.proposal_id, voter=self.voter, options=self.option
+            proposal_id=self.proposal_id, voter=self.voter, option=self.option
         )
 
     @classmethod

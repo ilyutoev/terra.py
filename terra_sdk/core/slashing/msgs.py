@@ -7,7 +7,7 @@ from terra_proto.cosmos.slashing.v1beta1 import MsgUnjail as MsgUnjail_pb
 
 from terra_sdk.core import ValAddress
 from terra_sdk.core.msg import Msg
-
+from typing import cast
 __all__ = ["MsgUnjail"]
 
 
@@ -16,7 +16,7 @@ class MsgUnjail(Msg):
     """Attempt to unjail a jailed validator (must be submitted by same validator).
 
     Args:
-        address: validator address to unjail"""
+        validator_addr: validator address to unjail"""
 
     type_amino = "slashing/MsgUnjail"
     """"""
@@ -25,18 +25,18 @@ class MsgUnjail(Msg):
     action = "unjail"
     """"""
 
-    address: ValAddress = attr.ib()
+    validator_addr: ValAddress = attr.ib()
 
     def to_amino(self) -> dict:
-        return {"type": self.type_amino, "value": {"address": self.address}}
+        return {"type": self.type_amino, "value": {"validator_addr": self.validator_addr}}
 
     @classmethod
     def from_data(cls, data: dict) -> MsgUnjail:
-        return cls(address=data["address"])
+        return cls(validator_addr=data["validator_addr"])
 
     def to_proto(self) -> MsgUnjail_pb:
-        return MsgUnjail_pb(validator_addr=self.address)
+        return MsgUnjail_pb(validator_addr=self.validator_addr)
 
     @classmethod
     def from_proto(cls, proto: MsgUnjail_pb) -> MsgUnjail:
-        return cls(address=proto.address)
+        return cls(validator_addr=cast(ValAddress, proto.validator_addr))

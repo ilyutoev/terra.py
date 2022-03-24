@@ -19,7 +19,7 @@ from terra_sdk.core import AccAddress, Coin, Dec, ValAddress, ValConsPubKey
 from terra_sdk.core.msg import Msg
 
 from .data import CommissionRates, Description
-
+from typing import cast
 __all__ = [
     "MsgBeginRedelegate",
     "MsgDelegate",
@@ -246,11 +246,11 @@ class MsgEditValidator(Msg):
 
     @classmethod
     def from_proto(cls, proto: MsgEditValidator_pb) -> MsgEditValidator:
-        msd = int(proto.min_self_delegation) if proto.min_self_delegation else "0"
+        msd = int(proto.min_self_delegation) if proto.min_self_delegation else 0
         cr = Dec(proto.commission_rate) if proto.commission_rate else Dec("0")
         return cls(
-            description=proto.description,
-            validator_address=proto.validator_address,
+            description=Description.from_proto(proto.description),
+            validator_address=cast(ValAddress, proto.validator_address),
             commission_rate=cr,
             min_self_delegation=msd,
         )

@@ -17,8 +17,13 @@ parse_content = create_demux(
 
 parse_content_proto = create_demux_proto(
     [
-        [CommunityPoolSpendProposal.type_url, CommunityPoolSpendProposal_pb],
-        [TextProposal.type_url, TextProposal_pb],
-        [ParameterChangeProposal.type_url, ParameterChangeProposal_pb],
+        (CommunityPoolSpendProposal.type_url, CommunityPoolSpendProposal_pb),
+        (TextProposal.type_url, TextProposal_pb),
+        (ParameterChangeProposal.type_url, ParameterChangeProposal_pb),
+    ],
+    [
+        CommunityPoolSpendProposal,
+        TextProposal,
+        ParameterChangeProposal,
     ]
 )
