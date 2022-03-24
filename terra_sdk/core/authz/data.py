@@ -141,7 +141,7 @@ class AuthorizationGrant(JSONSerializable):
     authorization: Authorization = attr.ib()
     """Grant authorization details."""
 
-    expiration: datetime = attr.ib(converter=parser.parse)
+    expiration: datetime = attr.ib()
     """Grant expiration."""
 
     def to_amino(self) -> dict:
@@ -173,7 +173,7 @@ class AuthorizationGrant(JSONSerializable):
     def from_proto(cls, proto: Grant_pb) -> AuthorizationGrant:
         return cls(
             authorization=Authorization.from_proto(proto.authorization),
-            expiration=parser.parse(proto.expiration),
+            expiration=proto.expiration,
         )
 
     @classmethod

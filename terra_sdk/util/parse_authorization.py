@@ -15,5 +15,6 @@ parse_authorization_proto = create_demux_proto(
     [
         [GenericAuthorization.type_url, GenericAuthorization_pb],
         [SendAuthorization.type_url, SendAuthorization_pb],
-    ]
+    ],
+    [GenericAuthorization, SendAuthorization]
 )

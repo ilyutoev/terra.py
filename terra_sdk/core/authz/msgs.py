@@ -14,7 +14,7 @@ from terra_sdk.core.msg import Msg
 
 from .data import Authorization, AuthorizationGrant
 
-__all__ = ["MsgExecAuthorized", "MsgGrantAuthorization", "MsgRevokeAuthorization"]
+__all__ = ["MsgExecAuthorized", "MsgGrant", "MsgRevokeAuthorization"]
 
 
 @attr.s
@@ -75,7 +75,7 @@ class MsgExecAuthorized(Msg):
 
 
 @attr.s
-class MsgGrantAuthorization(Msg):
+class MsgGrant(Msg):
     """Grant an authorization to ``grantee`` to call messages on behalf of ``granter``.
 
     Args:
@@ -112,7 +112,7 @@ class MsgGrantAuthorization(Msg):
         }
 
     @classmethod
-    def from_data(cls, data: dict) -> MsgGrantAuthorization:
+    def from_data(cls, data: dict) -> MsgGrant:
         data = data["value"]
         return cls(
             granter=data["granter"],
@@ -129,7 +129,7 @@ class MsgGrantAuthorization(Msg):
         )
 
     @classmethod
-    def from_proto(cls, proto: MsgGrant_pb) -> MsgGrantAuthorization:
+    def from_proto(cls, proto: MsgGrant_pb) -> MsgGrant:
         return cls(
             granter=proto.granter,
             grantee=proto.grantee,
@@ -137,7 +137,7 @@ class MsgGrantAuthorization(Msg):
         )
 
     @classmethod
-    def from_amino(cls, amino: dict) -> MsgGrantAuthorization:
+    def from_amino(cls, amino: dict) -> MsgGrant:
         value = amino["value"]
         return cls(
             grantee=value["grantee"],

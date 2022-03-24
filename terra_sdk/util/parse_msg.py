@@ -86,7 +86,7 @@ from terra_proto.terra.wasm.v1beta1 import \
     MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb
 
 # core msgs
-from terra_sdk.core.authz import (MsgExecAuthorized, MsgGrantAuthorization,
+from terra_sdk.core.authz import (MsgExecAuthorized, MsgGrant,
                                   MsgRevokeAuthorization)
 from terra_sdk.core.bank import MsgMultiSend, MsgSend
 from terra_sdk.core.distribution import (MsgFundCommunityPool,
@@ -133,7 +133,7 @@ gov_msgs = [MsgDeposit, MsgSubmitProposal, MsgVote]
 market_msgs = [MsgSwap, MsgSwapSend]
 authz_msgs = [
     MsgExecAuthorized,
-    MsgGrantAuthorization,
+    MsgGrant,
     MsgRevokeAuthorization,
 ]
 oracle_msgs = [
@@ -214,7 +214,7 @@ gov_protos = [
 market_protos = [[MsgSwap.type_url, MsgSwap_pb], [MsgSwapSend.type_url, MsgSwapSend_pb]]
 authz_protos = [
     [MsgExecAuthorized.type_url, MsgExec_pb],
-    [MsgGrantAuthorization.type_url, MsgGrant_pb],
+    [MsgGrant.type_url, MsgGrant_pb],
     [MsgRevokeAuthorization.type_url, MsgRevoke_pb],
 ]
 oracle_protos = [

@@ -1,6 +1,6 @@
 from terra_sdk.client.lcd.api.tx import CreateTxOptions
 from terra_sdk.client.localterra import LocalTerra
-from terra_sdk.core.authz import (MsgExecAuthorized, MsgGrantAuthorization,
+from terra_sdk.core.authz import (MsgExecAuthorized, MsgGrant,
                                   MsgRevokeAuthorization)
 
 
@@ -8,7 +8,7 @@ def main():
     terra = LocalTerra()
     test1 = terra.wallets["test1"]
 
-    msgG = MsgGrantAuthorization(
+    msgG = MsgGrant(
         granter="terra1x46rqay4d3cssq8gxxvqz8xt6nwlz4td20k38v",
         grantee="terra17lmam6zguazs5q5u6z5mmx76uj63gldnse2pdp"
         """
