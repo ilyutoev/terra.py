@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import attr
 from terra_proto.cosmos.distribution.v1beta1 import \
     MsgFundCommunityPool as MsgFundCommunityPool_pb
@@ -14,7 +16,7 @@ from terra_proto.cosmos.distribution.v1beta1 import \
 
 from terra_sdk.core import AccAddress, Coins, ValAddress
 from terra_sdk.core.msg import Msg
-from typing import cast
+
 __all__ = [
     "MsgSetWithdrawAddress",
     "MsgWithdrawDelegatorReward",

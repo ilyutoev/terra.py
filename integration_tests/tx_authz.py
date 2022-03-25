@@ -1,7 +1,6 @@
 from terra_sdk.client.lcd.api.tx import CreateTxOptions
 from terra_sdk.client.localterra import LocalTerra
-from terra_sdk.core.authz import (MsgExec, MsgGrant,
-                                  MsgRevokeAuthorization)
+from terra_sdk.core.authz import MsgExec, MsgGrant, MsgRevokeAuthorization
 
 
 def main():

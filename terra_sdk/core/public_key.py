@@ -276,7 +276,10 @@ class LegacyAminoMultisigPublicKey(PublicKey):
     def from_proto(cls, proto: LegacyAminoPubKey_pb) -> LegacyAminoMultisigPublicKey:
         return cls(
             threshold=proto.threshold,
-            public_keys=[SimplePublicKey.from_proto(SimplePubKey_pb().parse(pk.value)) for pk in proto.public_keys],
+            public_keys=[
+                SimplePublicKey.from_proto(SimplePubKey_pb().parse(pk.value))
+                for pk in proto.public_keys
+            ],
         )
 
     @classmethod

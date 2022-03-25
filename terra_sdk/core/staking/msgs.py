@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Optional, cast
 
 import attr
+from terra_proto.cosmos.crypto.ed25519 import PubKey as ValConsPubKey_pb
 from terra_proto.cosmos.staking.v1beta1 import \
     MsgBeginRedelegate as MsgBeginRedelegate_pb
 from terra_proto.cosmos.staking.v1beta1 import \
@@ -14,7 +15,7 @@ from terra_proto.cosmos.staking.v1beta1 import \
     MsgEditValidator as MsgEditValidator_pb
 from terra_proto.cosmos.staking.v1beta1 import \
     MsgUndelegate as MsgUndelegate_pb
-from terra_proto.cosmos.crypto.ed25519 import PubKey as ValConsPubKey_pb
+
 from terra_sdk.core import AccAddress, Coin, Dec, ValAddress, ValConsPubKey
 from terra_sdk.core.msg import Msg
 
@@ -316,6 +317,8 @@ class MsgCreateValidator(Msg):
             min_self_delegation=int(proto.min_self_delegation),
             delegator_address=proto.delegator_address,
             validator_address=proto.validator_address,
-            pubkey=ValConsPubKey.from_proto(ValConsPubKey_pb().parse(proto.pubkey.value)),
+            pubkey=ValConsPubKey.from_proto(
+                ValConsPubKey_pb().parse(proto.pubkey.value)
+            ),
             value=Coin.from_proto(proto.value),
         )

@@ -1,5 +1,4 @@
-from terra_sdk.core.authz import (MsgExec, MsgGrant,
-                                  MsgRevokeAuthorization)
+from terra_sdk.core.authz import MsgExec, MsgGrant, MsgRevokeAuthorization
 
 
 def test_deserializes_msg_exec_authorized_examples(load_json_examples):

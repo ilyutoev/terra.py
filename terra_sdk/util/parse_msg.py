@@ -86,8 +86,7 @@ from terra_proto.terra.wasm.v1beta1 import \
     MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb
 
 # core msgs
-from terra_sdk.core.authz import (MsgExec, MsgGrant,
-                                  MsgRevokeAuthorization)
+from terra_sdk.core.authz import MsgExec, MsgGrant, MsgRevokeAuthorization
 from terra_sdk.core.bank import MsgMultiSend, MsgSend
 from terra_sdk.core.distribution import (MsgFundCommunityPool,
                                          MsgSetWithdrawAddress,

@@ -1,5 +1,5 @@
 import copy
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import attr
 from multidict import CIMultiDict
@@ -13,7 +13,7 @@ from terra_sdk.core.tx import (AuthInfo, Fee, SignerData, SignMode, Tx, TxBody,
                                TxInfo)
 from terra_sdk.util.hash import hash_amino
 from terra_sdk.util.json import JSONSerializable
-from typing import Dict, Any
+
 from ..params import APIParams
 from ._base import BaseAsyncAPI, sync_bind
 
@@ -96,8 +96,7 @@ class GasInfo:
 
     @classmethod
     def from_data(cls, data: dict):
-        return cls(gas_wanted=data["gas_wanted"],
-                   gas_used=data["gas_used"])
+        return cls(gas_wanted=data["gas_wanted"], gas_used=data["gas_used"])
 
 
 @attr.s
@@ -106,11 +105,8 @@ class EventAttribute:
     value: str = attr.ib()
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'EventAttribute':
-        return cls(
-            key=data['key'],
-            value=data['value']
-        )
+    def from_data(cls, data: Dict[str, Any]) -> "EventAttribute":
+        return cls(key=data["key"], value=data["value"])
 
 
 @attr.s
@@ -119,10 +115,10 @@ class Event:
     attributes: List[EventAttribute] = attr.ib(converter=list)
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'Event':
+    def from_data(cls, data: Dict[str, Any]) -> "Event":
         return cls(
-            type=data['type'],
-            attributes=[EventAttribute.from_data(ea) for ea in data['attributes']]
+            type=data["type"],
+            attributes=[EventAttribute.from_data(ea) for ea in data["attributes"]],
         )
 
 
@@ -133,13 +129,12 @@ class SimulateResult:
     events: List[Event] = attr.ib(converter=list)
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'SimulateResult':
+    def from_data(cls, data: Dict[str, Any]) -> "SimulateResult":
         return cls(
-            data=data['data'],
-            log=data['log'],
-            events=[Event.from_data(e) for e in data['events']]
+            data=data["data"],
+            log=data["log"],
+            events=[Event.from_data(e) for e in data["events"]],
         )
-
 
 
 @attr.s

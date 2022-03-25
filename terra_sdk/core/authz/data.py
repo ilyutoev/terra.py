@@ -178,7 +178,6 @@ class AuthorizationGrant(JSONSerializable):
 
     @classmethod
     def from_amino(cls, amino: dict) -> AuthorizationGrant:
-        value = amino["value"]
         return cls(
             authorization=Authorization.from_amino(amino["authorization"]),
             expiration=amino["expiration"],
