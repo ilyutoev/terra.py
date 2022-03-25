@@ -33,18 +33,18 @@ class MerkleRoot(JSONSerializable):
 
 @attr.s
 class MerklePrefix(JSONSerializable):
-    key_prefix: str = attr.ib()
+    key_prefix: bytes = attr.ib()
 
     def to_amino(self):
         raise Exception("Amino not supported")
 
     @classmethod
     def from_data(cls, data: dict) -> MerklePrefix:
-        return cls(key_prefix=base64.b64decode(data["key_prefix"]))
+        return cls(key_prefix=data["key_prefix"])
 
     def to_proto(self) -> MerklePrefix_pb:
-        return MerklePrefix_pb(key_prefix=base64.b64encode(self.key_prefix))
+        return MerklePrefix_pb(key_prefix=self.key_prefix)
 
     @classmethod
     def from_proto(cls, proto: MerklePrefix_pb) -> MerklePrefix:
-        return cls(key_prefix=base64.b64decode(proto.key_prefix))
+        return cls(key_prefix=proto.key_prefix)

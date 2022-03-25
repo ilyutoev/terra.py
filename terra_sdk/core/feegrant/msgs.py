@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import attr
-from terra_proto.cosmos.feegrant.v1beta1 import (
-    MsgGrantAllowance as MsgGrantAllowance_pb,
-)
-from terra_proto.cosmos.feegrant.v1beta1 import (
-    MsgRevokeAllowance as MsgRevokeAllowance_pb,
-)
+from terra_proto.cosmos.feegrant.v1beta1 import \
+    MsgGrantAllowance as MsgGrantAllowance_pb
+from terra_proto.cosmos.feegrant.v1beta1 import \
+    MsgRevokeAllowance as MsgRevokeAllowance_pb
 
 from terra_sdk.core import AccAddress
 from terra_sdk.core.msg import Msg
@@ -62,8 +62,8 @@ class MsgGrantAllowance(Msg):
     @classmethod
     def from_proto(cls, proto: MsgGrantAllowance_pb) -> MsgGrantAllowance:
         return cls(
-            granter=proto.granter,
-            grantee=proto.grantee,
+            granter=cast(AccAddress, proto.granter),
+            grantee=cast(AccAddress, proto.grantee),
             allowance=Allowance.from_proto(proto.allowance),
         )
 

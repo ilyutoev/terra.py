@@ -8,7 +8,8 @@ from typing import List, Union
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
 from terra_proto.cosmos.crypto.ed25519 import PubKey as ValConsPubKey_pb
-from terra_proto.cosmos.crypto.multisig import LegacyAminoPubKey as LegacyAminoPubKey_pb
+from terra_proto.cosmos.crypto.multisig import \
+    LegacyAminoPubKey as LegacyAminoPubKey_pb
 from terra_proto.cosmos.crypto.secp256k1 import PubKey as SimplePubKey_pb
 
 from terra_sdk.util.json import JSONSerializable
@@ -81,7 +82,9 @@ class PublicKey(JSONSerializable, ABC):
         elif type_url == ValConsPubKey.type_url:
             return ValConsPubKey.from_proto(ValConsPubKey_pb().parse(value))
         elif type_url == LegacyAminoMultisigPublicKey.type_url:
-            return LegacyAminoMultisigPublicKey.from_proto(LegacyAminoPubKey_pb().parse(value))
+            return LegacyAminoMultisigPublicKey.from_proto(
+                LegacyAminoPubKey_pb().parse(value)
+            )
         raise TypeError("could not marshal PublicKey: type is incorrect")
 
     @classmethod
@@ -271,8 +274,10 @@ class LegacyAminoMultisigPublicKey(PublicKey):
 
     @classmethod
     def from_proto(cls, proto: LegacyAminoPubKey_pb) -> LegacyAminoMultisigPublicKey:
-        return cls(threshold=proto.threshold, public_keys=[SimplePublicKey.from_proto(pk) for pk in proto.public_keys])
-
+        return cls(
+            threshold=proto.threshold,
+            public_keys=[SimplePublicKey.from_proto(SimplePubKey_pb().parse(pk.value)) for pk in proto.public_keys],
+        )
 
     @classmethod
     def from_amino(cls, amino: dict) -> LegacyAminoMultisigPublicKey:

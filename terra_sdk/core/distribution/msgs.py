@@ -3,18 +3,14 @@
 from __future__ import annotations
 
 import attr
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgFundCommunityPool as MsgFundCommunityPool_pb,
-)
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgSetWithdrawAddress as MsgSetWithdrawAddress_pb,
-)
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgWithdrawDelegatorReward as MsgWithdrawDelegatorReward_pb,
-)
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgWithdrawValidatorCommission as MsgWithdrawValidatorCommission_pb,
-)
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgFundCommunityPool as MsgFundCommunityPool_pb
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgSetWithdrawAddress as MsgSetWithdrawAddress_pb
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgWithdrawDelegatorReward as MsgWithdrawDelegatorReward_pb
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgWithdrawValidatorCommission as MsgWithdrawValidatorCommission_pb
 
 from terra_sdk.core import AccAddress, Coins, ValAddress
 from terra_sdk.core.msg import Msg
@@ -107,7 +103,7 @@ class MsgWithdrawDelegatorReward(Msg):
             "type": self.type_amino,
             "value": {
                 "delegator_address": self.delegator_address,
-                "withdraw_address": self.withdraw_address,
+                "withdraw_address": self.validator_address,
             },
         }
 
@@ -115,7 +111,7 @@ class MsgWithdrawDelegatorReward(Msg):
         return {
             "@type": self.type_url,
             "delegator_address": self.delegator_address,
-            "withdraw_address": self.withdraw_address,
+            "validator_address": self.validator_address,
         }
 
     @classmethod
@@ -136,8 +132,8 @@ class MsgWithdrawDelegatorReward(Msg):
         cls, data: MsgWithdrawDelegatorReward_pb
     ) -> MsgWithdrawDelegatorReward:
         return cls(
-            delegator_address=data["delegator_address"],
-            validator_address=data["validator_address"],
+            delegator_address=data.delegator_address,
+            validator_address=data.validator_address,
         )
 
 
@@ -178,9 +174,9 @@ class MsgWithdrawValidatorCommission(Msg):
 
     @classmethod
     def from_proto(
-        cls, data: MsgWithdrawValidatorCommission_pb
+        cls, proto: MsgWithdrawValidatorCommission_pb
     ) -> MsgWithdrawValidatorCommission:
-        return cls(validator_address=data["validator_address"])
+        return cls(proto.validator_address)
 
 
 @attr.s

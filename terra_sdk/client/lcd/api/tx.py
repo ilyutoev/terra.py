@@ -1,4 +1,3 @@
-import base64
 import copy
 from typing import List, Optional
 
@@ -6,13 +5,12 @@ import attr
 from multidict import CIMultiDict
 
 from terra_sdk.core import AccAddress, Coins, Dec, Numeric, PublicKey
-from terra_sdk.core.broadcast import (
-    AsyncTxBroadcastResult,
-    BlockTxBroadcastResult,
-    SyncTxBroadcastResult,
-)
+from terra_sdk.core.broadcast import (AsyncTxBroadcastResult,
+                                      BlockTxBroadcastResult,
+                                      SyncTxBroadcastResult)
 from terra_sdk.core.msg import Msg
-from terra_sdk.core.tx import AuthInfo, Fee, SignerData, SignMode, Tx, TxBody, TxInfo
+from terra_sdk.core.tx import (AuthInfo, Fee, SignerData, SignMode, Tx, TxBody,
+                               TxInfo)
 from terra_sdk.util.hash import hash_amino
 from terra_sdk.util.json import JSONSerializable
 
@@ -231,19 +229,11 @@ class AsyncTxAPI(BaseAsyncAPI):
 
         res = await self._c._post(
             "/cosmos/tx/v1beta1/simulate",
-            {"tx_bytes": await super()._try_await(self.encode(tx))},
+            {"tx_bytes": tx.encode()},
         )
         simulated = SimulateResponse.from_data(res)
 
-        return int(Dec(gas_adjustment).mul(simulated.gas_info["gas_used"]))
-
-    async def encode(self, tx: Tx) -> str:
-        """Encode a Tx to base64 encoded proto string"""
-        return base64.b64encode(tx.to_proto().SerializeToString()).decode()
-
-    async def decode(self, tx: str) -> Tx:
-        """Decode base64 encoded proto string to a Tx"""
-        return Tx.from_bytes(base64.b64decode(tx))
+        return int(Dec(gas_adjustment).mul(simulated.gas_info.gas_used))
 
     async def hash(self, tx: Tx) -> str:
         """Compute hash for a transaction.
@@ -254,13 +244,13 @@ class AsyncTxAPI(BaseAsyncAPI):
         Returns:
             str: transaction hash
         """
-        amino = await self.encode(tx)
+        amino = tx.encode()
         return hash_amino(amino)
 
     async def _broadcast(
         self, tx: Tx, mode: str, options: BroadcastOptions = None
     ) -> dict:
-        data = {"tx_bytes": await super()._try_await(self.encode(tx)), "mode": mode}
+        data = {"tx_bytes": tx.encode(), "mode": mode}
         return await self._c._post("/cosmos/tx/v1beta1/txs", data)  # , raw=True)
 
     async def broadcast_sync(
@@ -376,7 +366,7 @@ class AsyncTxAPI(BaseAsyncAPI):
         txs = res.get("block").get("data").get("txs")
         if len(txs) <= 0:
             return []
-        return [self.decode(tx) for tx in txs]
+        return [Tx.from_encoded(tx) for tx in txs]
 
 
 class TxAPI(AsyncTxAPI):
@@ -407,18 +397,6 @@ class TxAPI(AsyncTxAPI):
         pass
 
     estimate_gas.__doc__ = AsyncTxAPI.estimate_gas.__doc__
-
-    @sync_bind(AsyncTxAPI.encode)
-    def encode(self, tx: Tx) -> str:
-        pass
-
-    encode.__doc__ = AsyncTxAPI.encode.__doc__
-
-    @sync_bind(AsyncTxAPI.decode)
-    def decode(self, tx: str) -> Tx:
-        pass
-
-    decode.__doc__ = AsyncTxAPI.decode.__doc__
 
     @sync_bind(AsyncTxAPI.hash)
     def hash(self, tx: Tx) -> str:

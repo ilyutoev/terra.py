@@ -6,20 +6,18 @@ from datetime import datetime
 from typing import List, Optional
 
 import attr
-from dateutil import parser
-from terra_proto.cosmos.authz.v1beta1 import (
-    GenericAuthorization as GenericAuthorization_pb,
-)
-from terra_proto.cosmos.authz.v1beta1 import Grant as Grant_pb
-from terra_proto.cosmos.bank.v1beta1 import SendAuthorization as SendAuthorization_pb
-from terra_proto.cosmos.staking.v1beta1 import AuthorizationType
-from terra_proto.cosmos.staking.v1beta1 import (
-    StakeAuthorization as StakeAuthorization_pb,
-)
-from terra_proto.cosmos.staking.v1beta1 import (
-    StakeAuthorizationValidators as StakeAuthorizationValidators_pb,
-)
 from betterproto.lib.google.protobuf import Any as Any_pb
+from dateutil import parser
+from terra_proto.cosmos.authz.v1beta1 import \
+    GenericAuthorization as GenericAuthorization_pb
+from terra_proto.cosmos.authz.v1beta1 import Grant as Grant_pb
+from terra_proto.cosmos.bank.v1beta1 import \
+    SendAuthorization as SendAuthorization_pb
+from terra_proto.cosmos.staking.v1beta1 import AuthorizationType
+from terra_proto.cosmos.staking.v1beta1 import \
+    StakeAuthorization as StakeAuthorization_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    StakeAuthorizationValidators as StakeAuthorizationValidators_pb
 
 from terra_sdk.core import AccAddress, Coin, Coins
 from terra_sdk.util.base import BaseTerraData
@@ -40,7 +38,8 @@ class Authorization(BaseTerraData):
 
     @staticmethod
     def from_amino(amino: dict) -> Authorization:
-        from terra_sdk.util.parse_authorization import parse_authorization_amino
+        from terra_sdk.util.parse_authorization import \
+            parse_authorization_amino
 
         return parse_authorization_amino(amino)
 
@@ -52,7 +51,8 @@ class Authorization(BaseTerraData):
 
     @staticmethod
     def from_proto(proto: Any_pb) -> Authorization:
-        from terra_sdk.util.parse_authorization import parse_authorization_proto
+        from terra_sdk.util.parse_authorization import \
+            parse_authorization_proto
 
         return parse_authorization_proto(proto)
 
@@ -98,7 +98,6 @@ class SendAuthorization(Authorization):
         return cls(spend_limit=Coins.from_amino(value["spend_limit"]))
 
 
-
 @attr.s
 class GenericAuthorization(Authorization):
     """Generic type of :class:`Authorization`, specifying the type of message to allow.
@@ -142,7 +141,7 @@ class AuthorizationGrant(JSONSerializable):
     authorization: Authorization = attr.ib()
     """Grant authorization details."""
 
-    expiration: datetime = attr.ib(converter=parser.parse)
+    expiration: datetime = attr.ib()
     """Grant expiration."""
 
     def to_amino(self) -> dict:
@@ -174,7 +173,7 @@ class AuthorizationGrant(JSONSerializable):
     def from_proto(cls, proto: Grant_pb) -> AuthorizationGrant:
         return cls(
             authorization=Authorization.from_proto(proto.authorization),
-            expiration=parser.parse(proto.expiration),
+            expiration=proto.expiration,
         )
 
     @classmethod
@@ -182,7 +181,7 @@ class AuthorizationGrant(JSONSerializable):
         value = amino["value"]
         return cls(
             authorization=Authorization.from_amino(amino["authorization"]),
-            expiration=amino["expiration"]
+            expiration=amino["expiration"],
         )
 
 
@@ -204,7 +203,9 @@ class StakeAuthorizationValidators(JSONSerializable):
         return StakeAuthorizationValidators_pb(address=self.address)
 
     @classmethod
-    def from_proto(cls, proto: StakeAuthorizationValidators_pb) -> StakeAuthorizationValidators:
+    def from_proto(
+        cls, proto: StakeAuthorizationValidators_pb
+    ) -> StakeAuthorizationValidators:
         return cls(address=proto.address)
 
 
@@ -256,9 +257,7 @@ class StakeAuthorization(Authorization):
     def from_proto(cls, proto: StakeAuthorization_pb) -> StakeAuthorization:
         return StakeAuthorization(
             authorization_type=proto.authorization_type,
-            max_tokens=Coins.from_proto(proto.max_tokens)
-            if proto.max_tokens
-            else None,
+            max_tokens=Coins.from_proto(proto.max_tokens) if proto.max_tokens else None,
             allow_list=StakeAuthorizationValidators.from_proto(proto.allow_list)
             if proto.allow_list
             else None,

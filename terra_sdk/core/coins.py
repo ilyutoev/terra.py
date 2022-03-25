@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import copy
-from typing import Any, Callable, Dict, Iterable, Iterator, List, Optional, Union
+from typing import (Any, Callable, Dict, Iterable, Iterator, List, Optional,
+                    Union)
 
 from terra_proto.cosmos.base.v1beta1 import Coin as Coin_pb
 
@@ -51,10 +52,11 @@ class Coins(JSONSerializable, List[Coin_pb]):
         coin_strings = s.split(r",")
         return Coins(Coin.from_str(cs) for cs in coin_strings)
 
-    def __init__(self, arg: Optional[Coins.Input] = {}, **denoms):
+    def __init__(self, arg: Optional[Coins.Input] = None, **denoms):
         """Converts the argument into a :class:`Coins` object."""
 
         if arg is None:
+            arg = {}
             self._coins = {}
             return
 
@@ -141,11 +143,11 @@ class Coins(JSONSerializable, List[Coin_pb]):
         coins = map(Coin.from_proto, proto)
         return cls(coins)
 
-    def to_proto(self) -> List[Coin_pb]:
+    def to_proto(self) -> List[Coin]:
         return [coin.to_proto() for coin in self]
 
     def to_dict(self) -> List[dict]:
-        return [coin.to_dict for coin in self]
+        return [coin.to_dict() for coin in self]
 
     def denoms(self) -> List[str]:
         """Get the list of denoms for all Coin objects contained."""

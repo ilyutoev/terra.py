@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, cast
 
 import attr
-from terra_proto.cosmos.staking.v1beta1 import (
-    MsgBeginRedelegate as MsgBeginRedelegate_pb,
-)
-from terra_proto.cosmos.staking.v1beta1 import (
-    MsgCreateValidator as MsgCreateValidator_pb,
-)
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgBeginRedelegate as MsgBeginRedelegate_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgCreateValidator as MsgCreateValidator_pb
 from terra_proto.cosmos.staking.v1beta1 import MsgDelegate as MsgDelegate_pb
-from terra_proto.cosmos.staking.v1beta1 import MsgEditValidator as MsgEditValidator_pb
-from terra_proto.cosmos.staking.v1beta1 import MsgUndelegate as MsgUndelegate_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgEditValidator as MsgEditValidator_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    MsgUndelegate as MsgUndelegate_pb
 
 from terra_sdk.core import AccAddress, Coin, Dec, ValAddress, ValConsPubKey
 from terra_sdk.core.msg import Msg
@@ -246,11 +246,11 @@ class MsgEditValidator(Msg):
 
     @classmethod
     def from_proto(cls, proto: MsgEditValidator_pb) -> MsgEditValidator:
-        msd = int(proto.min_self_delegation) if proto.min_self_delegation else "0"
+        msd = int(proto.min_self_delegation) if proto.min_self_delegation else 0
         cr = Dec(proto.commission_rate) if proto.commission_rate else Dec("0")
         return cls(
-            description=proto.description,
-            validator_address=proto.validator_address,
+            description=Description.from_proto(proto.description),
+            validator_address=cast(ValAddress, proto.validator_address),
             commission_rate=cr,
             min_self_delegation=msd,
         )

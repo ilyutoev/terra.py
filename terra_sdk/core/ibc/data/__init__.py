@@ -1,11 +1,6 @@
 from .channel import Channel, Counterparty, Order, Packet, State
-from .client import (
-    ClientConsensusStates,
-    ConsensusStateWithHeight,
-    Height,
-    IdentifiedClientState,
-    Params,
-)
+from .client import (ClientConsensusStates, ConsensusStateWithHeight, Height,
+                     IdentifiedClientState, Params)
 from .commitment import MerklePrefix, MerkleRoot
 
 __all__ = [

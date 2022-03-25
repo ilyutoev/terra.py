@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import attr
 from terra_proto.cosmos.gov.v1beta1 import MsgDeposit as MsgDeposit_pb
-from terra_proto.cosmos.gov.v1beta1 import MsgSubmitProposal as MsgSubmitProposal_pb
+from terra_proto.cosmos.gov.v1beta1 import \
+    MsgSubmitProposal as MsgSubmitProposal_pb
 from terra_proto.cosmos.gov.v1beta1 import MsgVote as MsgVote_pb
 
 from terra_sdk.core import AccAddress, Coins
@@ -51,7 +54,7 @@ class MsgSubmitProposal(Msg):
             "@type": self.type_url,
             "content": self.content.to_data(),
             "initial_deposit": self.initial_deposit.to_data(),
-            "proposer": self.proposer
+            "proposer": self.proposer,
         }
 
     @classmethod
@@ -75,11 +78,11 @@ class MsgSubmitProposal(Msg):
     @classmethod
     def from_proto(cls, proto: MsgSubmitProposal_pb) -> MsgSubmitProposal:
         from terra_sdk.util.parse_content import parse_content_proto
-        content = parse_content_proto(proto.content)
+
         return cls(
-            content=content,
-            initial_deposit=Coins.from_proto(proto["initial_deposit"]),
-            proposer=proto["proposer"],
+            content=parse_content_proto(proto.content),
+            initial_deposit=Coins.from_proto(proto.initial_deposit),
+            proposer=cast(AccAddress, proto.proposer),
         )
 
 
@@ -216,13 +219,11 @@ class MsgVote(Msg):
 
     def to_proto(self) -> MsgVote_pb:
         return MsgVote_pb(
-            proposal_id=self.proposal_id, voter=self.voter, options=self.option
+            proposal_id=self.proposal_id, voter=self.voter, option=self.option
         )
 
     @classmethod
     def from_proto(cls, proto: MsgVote_pb) -> MsgVote:
         return cls(
-            proposal_id=proto.proposal_id,
-            voter=proto.voter,
-            option=proto.option
+            proposal_id=proto.proposal_id, voter=proto.voter, option=proto.option
         )

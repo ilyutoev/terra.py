@@ -6,18 +6,14 @@ from typing import List
 
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
-from terra_proto.ibc.core.connection.v1 import (
-    MsgConnectionOpenAck as MsgConnectionOpenAck_pb,
-)
-from terra_proto.ibc.core.connection.v1 import (
-    MsgConnectionOpenConfirm as MsgConnectionOpenConfirm_pb,
-)
-from terra_proto.ibc.core.connection.v1 import (
-    MsgConnectionOpenInit as MsgConnectionOpenInit_pb,
-)
-from terra_proto.ibc.core.connection.v1 import (
-    MsgConnectionOpenTry as MsgConnectionOpenTry_pb,
-)
+from terra_proto.ibc.core.connection.v1 import \
+    MsgConnectionOpenAck as MsgConnectionOpenAck_pb
+from terra_proto.ibc.core.connection.v1 import \
+    MsgConnectionOpenConfirm as MsgConnectionOpenConfirm_pb
+from terra_proto.ibc.core.connection.v1 import \
+    MsgConnectionOpenInit as MsgConnectionOpenInit_pb
+from terra_proto.ibc.core.connection.v1 import \
+    MsgConnectionOpenTry as MsgConnectionOpenTry_pb
 
 from terra_sdk.core import AccAddress
 from terra_sdk.core.ibc.data import Height
@@ -145,20 +141,20 @@ class MsgConnectionOpenTry(Msg):
     @classmethod
     def from_proto(cls, proto: MsgConnectionOpenTry_pb) -> MsgConnectionOpenTry:
         return cls(
-            client_id=proto["client_id"],
-            previous_connection_id=proto["previous_connection_id"],
-            client_state=proto["client_state"],
-            counterparty=Counterparty.from_proto(proto["counterparty"]),
-            delay_period=proto["delay_period"],
+            client_id=proto.client_id,
+            previous_connection_id=proto.previous_connection_id,
+            client_state=proto.client_state.to_dict(),
+            counterparty=Counterparty.from_proto(proto.counterparty),
+            delay_period=proto.delay_period,
             counterparty_versions=[
-                Version.from_proto(ver) for ver in proto["counterparty_versions"]
+                Version.from_proto(ver) for ver in proto.counterparty_versions
             ],
-            proof_height=Height.from_proto(proto["proof_height"]),
-            proof_init=proto["proof_init"],
-            proof_client=proto["proof_client"],
-            proof_consensus=proto["proof_consensus"],
-            consensus_height=Height.from_proto(proto["consensus_height"]),
-            signer=proto["signer"],
+            proof_height=Height.from_proto(proto.proof_height),
+            proof_init=proto.proof_init,
+            proof_client=proto.proof_client,
+            proof_consensus=proto.proof_consensus,
+            consensus_height=Height.from_proto(proto.consensus_height),
+            signer=proto.signer,
         )
 
 

@@ -5,16 +5,13 @@ from typing import List
 
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
-from terra_proto.ibc.core.client.v1 import (
-    ClientConsensusStates as ClientConsensusStates_pb,
-)
-from terra_proto.ibc.core.client.v1 import (
-    ConsensusStateWithHeight as ConsensusStateWithHeight_pb,
-)
+from terra_proto.ibc.core.client.v1 import \
+    ClientConsensusStates as ClientConsensusStates_pb
+from terra_proto.ibc.core.client.v1 import \
+    ConsensusStateWithHeight as ConsensusStateWithHeight_pb
 from terra_proto.ibc.core.client.v1 import Height as Height_pb
-from terra_proto.ibc.core.client.v1 import (
-    IdentifiedClientState as IdentifiedClientState_pb,
-)
+from terra_proto.ibc.core.client.v1 import \
+    IdentifiedClientState as IdentifiedClientState_pb
 from terra_proto.ibc.core.client.v1 import Params as Params_pb
 
 from terra_sdk.util.json import JSONSerializable

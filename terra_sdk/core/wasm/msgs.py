@@ -4,27 +4,25 @@ from __future__ import annotations
 
 import base64
 import copy
-import json
 from typing import Optional
 
 import attr
-from terra_proto.terra.wasm.v1beta1 import (
-    MsgClearContractAdmin as MsgClearContractAdmin_pb,
-)
-from terra_proto.terra.wasm.v1beta1 import MsgExecuteContract as MsgExecuteContract_pb
-from terra_proto.terra.wasm.v1beta1 import (
-    MsgInstantiateContract as MsgInstantiateContract_pb,
-)
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgClearContractAdmin as MsgClearContractAdmin_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgExecuteContract as MsgExecuteContract_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgInstantiateContract as MsgInstantiateContract_pb
 from terra_proto.terra.wasm.v1beta1 import MsgMigrateCode as MsgMigrateCode_pb
-from terra_proto.terra.wasm.v1beta1 import MsgMigrateContract as MsgMigrateContract_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgMigrateContract as MsgMigrateContract_pb
 from terra_proto.terra.wasm.v1beta1 import MsgStoreCode as MsgStoreCode_pb
-from terra_proto.terra.wasm.v1beta1 import (
-    MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb,
-)
-from betterproto.lib.google.protobuf import Any as Any_pb
+from terra_proto.terra.wasm.v1beta1 import \
+    MsgUpdateContractAdmin as MsgUpdateContractAdmin_pb
 
 from terra_sdk.core import AccAddress, Coins
 from terra_sdk.core.msg import Msg
+from terra_sdk.util.converter import bytes_to_dict, dict_to_bytes
 from terra_sdk.util.json import dict_to_data
 from terra_sdk.util.remove_none import remove_none
 
@@ -54,7 +52,7 @@ class MsgStoreCode(Msg):
     """"""
 
     sender: AccAddress = attr.ib()
-    wasm_byte_code: str = attr.ib()
+    wasm_byte_code: bytes = attr.ib()
 
     def to_amino(self) -> dict:
         return {
@@ -67,9 +65,7 @@ class MsgStoreCode(Msg):
         return cls(sender=data["sender"], wasm_byte_code=data["wasm_byte_code"])
 
     def to_proto(self) -> MsgStoreCode_pb:
-        return MsgStoreCode_pb(
-            sender=self.sender, wasm_byte_code=base64.b64decode(self.wasm_byte_code)
-        )
+        return MsgStoreCode_pb(sender=self.sender, wasm_byte_code=self.wasm_byte_code)
 
     @classmethod
     def from_proto(cls, proto: MsgStoreCode_pb) -> MsgStoreCode:
@@ -190,7 +186,7 @@ class MsgInstantiateContract(Msg):
             sender=self.sender,
             admin=self.admin,
             code_id=self.code_id,
-            init_msg=bytes(json.dumps(self.init_msg), "utf-8"),
+            init_msg=dict_to_bytes(self.init_msg),
             init_coins=self.init_coins.to_proto(),
         )
 
@@ -200,7 +196,7 @@ class MsgInstantiateContract(Msg):
             sender=proto.sender,
             admin=proto.admin,
             code_id=proto.code_id,
-            init_msg=remove_none(proto.init_msg),
+            init_msg=bytes_to_dict(proto.init_msg),
             init_coins=Coins.from_proto(proto.init_coins),
         )
 
@@ -251,17 +247,16 @@ class MsgExecuteContract(Msg):
         return MsgExecuteContract_pb(
             sender=self.sender,
             contract=self.contract,
-            execute_msg=bytes(json.dumps(self.execute_msg), "utf-8"),
+            execute_msg=dict_to_bytes(self.execute_msg),
             coins=self.coins.to_proto(),
         )
 
     @classmethod
-    def from_proto(cls, proto: Any_pb) -> MsgExecuteContract:
-        proto = MsgExecuteContract_pb.parse(proto.value)
+    def from_proto(cls, proto: MsgExecuteContract_pb) -> MsgExecuteContract:
         return cls(
             sender=proto.sender,
             contract=proto.contract,
-            execute_msg=remove_none(proto.execute_msg),
+            execute_msg=bytes_to_dict(proto.execute_msg),
             coins=Coins.from_proto(proto.coins),
         )
 
@@ -316,7 +311,7 @@ class MsgMigrateContract(Msg):
             admin=self.admin,
             contract=self.contract,
             new_code_id=self.new_code_id,
-            migrate_msg=bytes(json.dumps(self.migrate_msg), "utf-8"),
+            migrate_msg=dict_to_bytes(self.migrate_msg),
         )
 
     @classmethod
@@ -325,7 +320,7 @@ class MsgMigrateContract(Msg):
             admin=proto.admin,
             contract=proto.contract,
             new_code_id=proto.new_code_id,
-            migrate_msg=proto.migrate_msg,
+            migrate_msg=bytes_to_dict(proto.migrate_msg),
         )
 
 

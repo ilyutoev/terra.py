@@ -36,12 +36,12 @@ async def main():
         )
     )
 
-    encoded = await terra.tx.encode(tx)
+    encoded = tx.encode()
     print(f"encoded...{encoded}")
 
     print("=" * 64)
 
-    decoded = await terra.tx.decode(encoded)
+    decoded = tx.from_encoded(encoded)
     print(f"decoded...{decoded}")
 
     await terra.session.close()

@@ -7,7 +7,8 @@ import attr
 from dateutil import parser
 from terra_proto.cosmos.staking.v1beta1 import BondStatus
 from terra_proto.cosmos.staking.v1beta1 import Commission as Commission_pb
-from terra_proto.cosmos.staking.v1beta1 import CommissionRates as CommissionRates_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    CommissionRates as CommissionRates_pb
 from terra_proto.cosmos.staking.v1beta1 import Description as Description_pb
 from terra_proto.cosmos.staking.v1beta1 import Validator as Validator_pb
 
@@ -152,6 +153,16 @@ class Description(JSONSerializable):
             data.get("website"),
             data.get("details"),
             data.get("security_contact"),
+        )
+
+    @classmethod
+    def from_proto(cls, proto: Description_pb) -> Description:
+        return cls(
+            moniker=proto.moniker,
+            identity=proto.identity,
+            website=proto.website,
+            details=proto.details,
+            security_contact=proto.security_contact,
         )
 
     def to_proto(self) -> Description_pb:

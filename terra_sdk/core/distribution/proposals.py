@@ -2,20 +2,21 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
-from terra_proto.cosmos.distribution.v1beta1 import (
-    CommunityPoolSpendProposal as CommunityPoolSpendProposal_pb,
-)
+from terra_proto.cosmos.distribution.v1beta1 import \
+    CommunityPoolSpendProposal as CommunityPoolSpendProposal_pb
 
 from terra_sdk.core import AccAddress, Coins
-from terra_sdk.util.json import JSONSerializable
+from terra_sdk.util.base import BaseTerraData
 
 __all__ = ["CommunityPoolSpendProposal"]
 
 
 @attr.s
-class CommunityPoolSpendProposal(JSONSerializable):
+class CommunityPoolSpendProposal(BaseTerraData):
     """Proposal for allocating funds from the community pool to an address.
 
     Args:
@@ -63,6 +64,17 @@ class CommunityPoolSpendProposal(JSONSerializable):
             "recipient": self.recipient,
             "amount": self.amount.to_data(),
         }
+
+    @classmethod
+    def from_proto(
+        cls, proto: CommunityPoolSpendProposal_pb
+    ) -> CommunityPoolSpendProposal_pb:
+        return cls(
+            title=proto.title,
+            description=proto.description,
+            recipient=cast(AccAddress, proto.recipient),
+            amount=Coins.from_proto(proto.amount),
+        )
 
     def to_proto(self) -> CommunityPoolSpendProposal_pb:
         return CommunityPoolSpendProposal_pb(

@@ -7,7 +7,8 @@ import json
 from typing import Dict, List, Optional
 
 import attr
-from terra_proto.cosmos.base.abci.v1beta1 import AbciMessageLog as AbciMessageLog_pb
+from terra_proto.cosmos.base.abci.v1beta1 import \
+    AbciMessageLog as AbciMessageLog_pb
 from terra_proto.cosmos.base.abci.v1beta1 import Attribute as Attribute_pb
 from terra_proto.cosmos.base.abci.v1beta1 import StringEvent as StringEvent_pb
 from terra_proto.cosmos.base.abci.v1beta1 import TxResponse as TxResponse_pb
@@ -21,11 +22,8 @@ from terra_sdk.core.compact_bit_array import CompactBitArray
 from terra_sdk.core.fee import Fee
 from terra_sdk.core.mode_info import ModeInfo, ModeInfoMulti, ModeInfoSingle
 from terra_sdk.core.msg import Msg
-from terra_sdk.core.public_key import (
-    LegacyAminoMultisigPublicKey,
-    PublicKey,
-    SimplePublicKey,
-)
+from terra_sdk.core.public_key import (LegacyAminoMultisigPublicKey, PublicKey,
+                                       SimplePublicKey)
 from terra_sdk.core.signature_v2 import SignatureV2
 from terra_sdk.util.json import JSONSerializable
 
@@ -94,7 +92,7 @@ class Tx(JSONSerializable):
         return cls(
             TxBody.from_proto(proto.body),
             AuthInfo.from_proto(proto.auth_info),
-            proto.signatures
+            proto.signatures,
         )
 
     @classmethod
@@ -102,6 +100,13 @@ class Tx(JSONSerializable):
         proto = Tx_pb().parse(txb)
         c = cls.from_proto(proto)
         return c
+
+    def encode(self) -> str:
+        return base64.b64encode(self.to_proto().SerializeToString()).decode()
+
+    @classmethod
+    def from_encoded(cls, amino: str) -> Tx:
+        return cls.from_bytes(base64.b64decode(amino))
 
     def append_empty_signatures(self, signers: List[SignerData]):
         for signer in signers:
