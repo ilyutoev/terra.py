@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Optional, cast
 
 import attr
+from terra_proto.cosmos.crypto.ed25519 import PubKey as ValConsPubKey_pb
 from terra_proto.cosmos.staking.v1beta1 import \
     MsgBeginRedelegate as MsgBeginRedelegate_pb
 from terra_proto.cosmos.staking.v1beta1 import \
@@ -301,10 +302,10 @@ class MsgCreateValidator(Msg):
         return MsgCreateValidator_pb(
             description=self.description.to_proto(),
             commission=self.commission.to_proto(),
-            min_self_delegation=self.min_self_delegation,
+            min_self_delegation=str(self.min_self_delegation),
             delegator_address=self.delegator_address,
             validator_address=self.validator_address,
-            pubkey=self.pubkey.to_proto(),
+            pubkey=self.pubkey.pack_any(),
             value=self.value.to_proto(),
         )
 
@@ -316,6 +317,8 @@ class MsgCreateValidator(Msg):
             min_self_delegation=int(proto.min_self_delegation),
             delegator_address=proto.delegator_address,
             validator_address=proto.validator_address,
-            pubkey=proto.pubkey,
+            pubkey=ValConsPubKey.from_proto(
+                ValConsPubKey_pb().parse(proto.pubkey.value)
+            ),
             value=Coin.from_proto(proto.value),
         )

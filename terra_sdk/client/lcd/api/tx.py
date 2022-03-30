@@ -1,5 +1,5 @@
 import copy
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import attr
 from multidict import CIMultiDict
@@ -94,17 +94,32 @@ class GasInfo:
     gas_wanted: int = attr.ib(converter=int)
     gas_used: int = attr.ib(converter=int)
 
+    @classmethod
+    def from_data(cls, data: dict):
+        return cls(gas_wanted=data["gas_wanted"], gas_used=data["gas_used"])
+
 
 @attr.s
 class EventAttribute:
     key: str = attr.ib()
     value: str = attr.ib()
 
+    @classmethod
+    def from_data(cls, data: Dict[str, Any]) -> "EventAttribute":
+        return cls(key=data["key"], value=data["value"])
+
 
 @attr.s
 class Event:
     type: str = attr.ib()
     attributes: List[EventAttribute] = attr.ib(converter=list)
+
+    @classmethod
+    def from_data(cls, data: Dict[str, Any]) -> "Event":
+        return cls(
+            type=data["type"],
+            attributes=[EventAttribute.from_data(ea) for ea in data["attributes"]],
+        )
 
 
 @attr.s
@@ -113,11 +128,19 @@ class SimulateResult:
     log: str = attr.ib()
     events: List[Event] = attr.ib(converter=list)
 
+    @classmethod
+    def from_data(cls, data: Dict[str, Any]) -> "SimulateResult":
+        return cls(
+            data=data["data"],
+            log=data["log"],
+            events=[Event.from_data(e) for e in data["events"]],
+        )
+
 
 @attr.s
 class SimulateResponse(JSONSerializable):
-    gas_info: GasInfo = attr.ib()
-    result: SimulateResult = attr.ib()
+    gas_info: GasInfo = attr.ib(converter=GasInfo.from_data)
+    result: SimulateResult = attr.ib(converter=SimulateResult.from_data)
 
     @classmethod
     def from_data(cls, data: dict):

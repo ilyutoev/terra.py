@@ -86,12 +86,6 @@ class Commission(JSONSerializable):
             "update_time": to_isoformat(self.update_time),
         }
 
-    def to_amino(self) -> dict:
-        return {
-            "commission_rates": self.commission_rates.to_data(),
-            "update_time": to_isoformat(self.update_time),
-        }
-
     @classmethod
     def from_data(cls, data: dict) -> Commission:
         return cls(
