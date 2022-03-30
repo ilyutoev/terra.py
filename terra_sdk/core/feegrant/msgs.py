@@ -5,10 +5,12 @@ from __future__ import annotations
 from typing import cast
 
 import attr
-from terra_proto.cosmos.feegrant.v1beta1 import \
-    MsgGrantAllowance as MsgGrantAllowance_pb
-from terra_proto.cosmos.feegrant.v1beta1 import \
-    MsgRevokeAllowance as MsgRevokeAllowance_pb
+from terra_proto.cosmos.feegrant.v1beta1 import (
+    MsgGrantAllowance as MsgGrantAllowance_pb,
+)
+from terra_proto.cosmos.feegrant.v1beta1 import (
+    MsgRevokeAllowance as MsgRevokeAllowance_pb,
+)
 
 from terra_sdk.core import AccAddress
 from terra_sdk.core.msg import Msg

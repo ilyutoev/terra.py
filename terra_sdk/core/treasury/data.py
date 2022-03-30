@@ -5,8 +5,7 @@ from __future__ import annotations
 __all__ = ["PolicyConstraints"]
 
 import attr
-from terra_proto.terra.treasury.v1beta1 import \
-    PolicyConstraints as PolicyConstraints_pb
+from terra_proto.terra.treasury.v1beta1 import PolicyConstraints as PolicyConstraints_pb
 
 from terra_sdk.core import Coin, Dec
 from terra_sdk.util.json import JSONSerializable

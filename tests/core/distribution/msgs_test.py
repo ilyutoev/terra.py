@@ -1,6 +1,8 @@
-from terra_sdk.core.distribution import (MsgSetWithdrawAddress,
-                                         MsgWithdrawDelegatorReward,
-                                         MsgWithdrawValidatorCommission)
+from terra_sdk.core.distribution import (
+    MsgSetWithdrawAddress,
+    MsgWithdrawDelegatorReward,
+    MsgWithdrawValidatorCommission,
+)
 
 
 def test_deserializes_msg_modify_withdraw_address_examples(load_msg_examples):

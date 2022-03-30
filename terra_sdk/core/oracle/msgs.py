@@ -6,12 +6,15 @@ import copy
 import hashlib
 
 import attr
-from terra_proto.terra.oracle.v1beta1 import \
-    MsgAggregateExchangeRatePrevote as MsgAggregateExchangeRatePrevote_pb
-from terra_proto.terra.oracle.v1beta1 import \
-    MsgAggregateExchangeRateVote as MsgAggregateExchangeRateVote_pb
-from terra_proto.terra.oracle.v1beta1 import \
-    MsgDelegateFeedConsent as MsgDelegateFeedConsent_pb
+from terra_proto.terra.oracle.v1beta1 import (
+    MsgAggregateExchangeRatePrevote as MsgAggregateExchangeRatePrevote_pb,
+)
+from terra_proto.terra.oracle.v1beta1 import (
+    MsgAggregateExchangeRateVote as MsgAggregateExchangeRateVote_pb,
+)
+from terra_proto.terra.oracle.v1beta1 import (
+    MsgDelegateFeedConsent as MsgDelegateFeedConsent_pb,
+)
 
 from terra_sdk.core import AccAddress, Coins, Dec, ValAddress
 from terra_sdk.core.msg import Msg

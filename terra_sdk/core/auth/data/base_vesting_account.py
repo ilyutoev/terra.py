@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import attr
-from terra_proto.cosmos.vesting.v1beta1 import \
-    BaseVestingAccount as BaseVestingAccount_pb
+from terra_proto.cosmos.vesting.v1beta1 import (
+    BaseVestingAccount as BaseVestingAccount_pb,
+)
 
 from terra_sdk.core import Coins
 from terra_sdk.util.json import JSONSerializable

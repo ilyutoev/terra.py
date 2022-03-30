@@ -5,8 +5,9 @@ from __future__ import annotations
 from typing import List, Optional, Tuple
 
 import attr
-from terra_proto.cosmos.crypto.multisig.v1beta1 import \
-    MultiSignature as MultiSignature_pb
+from terra_proto.cosmos.crypto.multisig.v1beta1 import (
+    MultiSignature as MultiSignature_pb,
+)
 from terra_proto.cosmos.tx.signing.v1beta1 import SignMode
 
 from .compact_bit_array import CompactBitArray

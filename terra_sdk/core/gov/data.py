@@ -12,14 +12,15 @@ from terra_proto.cosmos.gov.v1beta1 import Proposal as Proposal_pb
 from terra_proto.cosmos.gov.v1beta1 import TallyResult as TallyResult_pb
 from terra_proto.cosmos.gov.v1beta1 import Vote as Vote_pb
 from terra_proto.cosmos.gov.v1beta1 import VoteOption
-from terra_proto.cosmos.gov.v1beta1 import \
-    WeightedVoteOption as WeightedVoteOption_pb
+from terra_proto.cosmos.gov.v1beta1 import WeightedVoteOption as WeightedVoteOption_pb
 
 from terra_sdk.core import AccAddress, Coins
 from terra_sdk.core.distribution import CommunityPoolSpendProposal
 from terra_sdk.core.params import ParameterChangeProposal
-from terra_sdk.core.upgrade import (CancelSoftwareUpgradeProposal,
-                                    SoftwareUpgradeProposal)
+from terra_sdk.core.upgrade import (
+    CancelSoftwareUpgradeProposal,
+    SoftwareUpgradeProposal,
+)
 from terra_sdk.util.json import JSONSerializable, dict_to_data
 
 from .proposals import TextProposal

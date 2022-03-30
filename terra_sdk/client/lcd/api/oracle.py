@@ -1,8 +1,10 @@
 from typing import List, Optional
 
 from terra_sdk.core import AccAddress, Coin, Coins, Dec, Numeric, ValAddress
-from terra_sdk.core.oracle import (AggregateExchangeRatePrevote,
-                                   AggregateExchangeRateVote)
+from terra_sdk.core.oracle import (
+    AggregateExchangeRatePrevote,
+    AggregateExchangeRateVote,
+)
 from terra_sdk.exceptions import LCDResponseError
 
 from ._base import BaseAsyncAPI, sync_bind

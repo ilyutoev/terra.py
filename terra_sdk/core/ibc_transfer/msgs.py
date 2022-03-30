@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import attr
-from terra_proto.ibc.applications.transfer.v1 import \
-    MsgTransfer as MsgTransfer_pb
+from terra_proto.ibc.applications.transfer.v1 import MsgTransfer as MsgTransfer_pb
 
 from terra_sdk.core import AccAddress, Coin
 from terra_sdk.core.ibc.data import Height

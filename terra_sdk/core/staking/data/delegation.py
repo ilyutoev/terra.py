@@ -6,17 +6,20 @@ from typing import List
 import attr
 from dateutil import parser
 from terra_proto.cosmos.staking.v1beta1 import Delegation as Delegation_pb
-from terra_proto.cosmos.staking.v1beta1 import \
-    DelegationResponse as DelegationResponse_pb
+from terra_proto.cosmos.staking.v1beta1 import (
+    DelegationResponse as DelegationResponse_pb,
+)
 from terra_proto.cosmos.staking.v1beta1 import Redelegation as Redelegation_pb
-from terra_proto.cosmos.staking.v1beta1 import \
-    RedelegationEntry as RedelegationEntry_pb
-from terra_proto.cosmos.staking.v1beta1 import \
-    RedelegationEntryResponse as RedelegationEntryResponse_pb
-from terra_proto.cosmos.staking.v1beta1 import \
-    UnbondingDelegation as UnbondingDelegation_pb
-from terra_proto.cosmos.staking.v1beta1 import \
-    UnbondingDelegationEntry as UnbondingDelegationEntry_pb
+from terra_proto.cosmos.staking.v1beta1 import RedelegationEntry as RedelegationEntry_pb
+from terra_proto.cosmos.staking.v1beta1 import (
+    RedelegationEntryResponse as RedelegationEntryResponse_pb,
+)
+from terra_proto.cosmos.staking.v1beta1 import (
+    UnbondingDelegation as UnbondingDelegation_pb,
+)
+from terra_proto.cosmos.staking.v1beta1 import (
+    UnbondingDelegationEntry as UnbondingDelegationEntry_pb,
+)
 
 from terra_sdk.core import AccAddress, Coin, Dec, ValAddress
 from terra_sdk.util.converter import to_isoformat

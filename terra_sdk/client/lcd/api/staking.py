@@ -3,8 +3,12 @@ from typing import List, Optional
 import attr
 
 from terra_sdk.core import AccAddress, Coin, Numeric, ValAddress
-from terra_sdk.core.staking import (Delegation, Redelegation,
-                                    UnbondingDelegation, Validator)
+from terra_sdk.core.staking import (
+    Delegation,
+    Redelegation,
+    UnbondingDelegation,
+    Validator,
+)
 
 from ._base import BaseAsyncAPI, sync_bind
 
