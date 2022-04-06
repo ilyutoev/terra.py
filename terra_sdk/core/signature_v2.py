@@ -5,9 +5,8 @@ from __future__ import annotations
 from typing import List, Optional, Tuple
 
 import attr
-from terra_proto.cosmos.crypto.multisig.v1beta1 import (
-    MultiSignature as MultiSignature_pb,
-)
+from terra_proto.cosmos.crypto.multisig.v1beta1 import \
+    MultiSignature as MultiSignature_pb
 from terra_proto.cosmos.tx.signing.v1beta1 import SignMode
 
 from .compact_bit_array import CompactBitArray
@@ -48,9 +47,9 @@ class Descriptor:
     def from_data(cls, data: dict) -> Descriptor:
         s = None
         m = None
-        if 'single' in data:
+        if "single" in data:
             s = Single.from_data(data["single"])
-        if 'multi' in data:
+        if "multi" in data:
             m = Multi.from_data(data["multi"])
         return cls(single=s, multi=m)
 
@@ -74,12 +73,8 @@ class Descriptor:
                 signatures.append(sig_bytes)
             pb = MultiSignature_pb(signatures=signatures)
             return (
-                ModeInfo(
-                    multi=ModeInfoMulti(
-                        sig_data.bitarray, mode_infos
-                    )
-                ),
-                bytes(pb)
+                ModeInfo(multi=ModeInfoMulti(sig_data.bitarray, mode_infos)),
+                bytes(pb),
             )
 
         raise ValueError("invalid signature descriptor")

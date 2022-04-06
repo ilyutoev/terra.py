@@ -1,9 +1,5 @@
-from .data import (
-    Authorization,
-    AuthorizationGrant,
-    GenericAuthorization,
-    SendAuthorization,
-)
+from .data import (Authorization, AuthorizationGrant, GenericAuthorization,
+                   SendAuthorization)
 from .msgs import MsgExec, MsgGrant, MsgRevokeAuthorization
 
 __all__ = [

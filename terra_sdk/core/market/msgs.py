@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+from typing import Any, Dict
+
 import attr
 from terra_proto.terra.market.v1beta1 import MsgSwap as MsgSwap_pb
 from terra_proto.terra.market.v1beta1 import MsgSwapSend as MsgSwapSend_pb
 
 from terra_sdk.core import AccAddress, Coin
 from terra_sdk.core.msg import Msg
-from typing import Dict, Any
 
 __all__ = ["MsgSwap", "MsgSwapSend"]
 

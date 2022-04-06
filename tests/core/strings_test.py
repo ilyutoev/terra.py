@@ -1,13 +1,7 @@
-from terra_sdk.core.bech32 import (
-    is_acc_address,
-    is_acc_pubkey,
-    is_val_address,
-    is_val_pubkey,
-    to_acc_address,
-    to_acc_pubkey,
-    to_val_address,
-    to_val_pubkey,
-)
+from terra_sdk.core.bech32 import (is_acc_address, is_acc_pubkey,
+                                   is_val_address, is_val_pubkey,
+                                   to_acc_address, to_acc_pubkey,
+                                   to_val_address, to_val_pubkey)
 
 
 def test_validates_acc_address():

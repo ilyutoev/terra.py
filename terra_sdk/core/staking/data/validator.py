@@ -7,7 +7,8 @@ import attr
 from dateutil import parser
 from terra_proto.cosmos.staking.v1beta1 import BondStatus
 from terra_proto.cosmos.staking.v1beta1 import Commission as Commission_pb
-from terra_proto.cosmos.staking.v1beta1 import CommissionRates as CommissionRates_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    CommissionRates as CommissionRates_pb
 from terra_proto.cosmos.staking.v1beta1 import Description as Description_pb
 from terra_proto.cosmos.staking.v1beta1 import Validator as Validator_pb
 

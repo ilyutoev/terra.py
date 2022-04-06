@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 
-import base64
 from ecdsa import SECP256k1, SigningKey
 from ecdsa.util import sigencode_string_canonize
 
@@ -15,9 +15,11 @@ from ..core import PublicKey, SimplePublicKey
 
 def compute_public_key(private_key: bytes) -> PublicKey:
     return SimplePublicKey(
-        key=base64.b64encode(SigningKey.from_string(private_key, curve=SECP256k1)
-        .get_verifying_key()
-        .to_string("compressed")).decode()
+        key=base64.b64encode(
+            SigningKey.from_string(private_key, curve=SECP256k1)
+            .get_verifying_key()
+            .to_string("compressed")
+        ).decode()
     )
 
 

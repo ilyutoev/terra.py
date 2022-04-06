@@ -7,7 +7,8 @@ import json
 from typing import Dict, List, Optional
 
 import attr
-from terra_proto.cosmos.base.abci.v1beta1 import AbciMessageLog as AbciMessageLog_pb
+from terra_proto.cosmos.base.abci.v1beta1 import \
+    AbciMessageLog as AbciMessageLog_pb
 from terra_proto.cosmos.base.abci.v1beta1 import Attribute as Attribute_pb
 from terra_proto.cosmos.base.abci.v1beta1 import StringEvent as StringEvent_pb
 from terra_proto.cosmos.base.abci.v1beta1 import TxResponse as TxResponse_pb
@@ -21,11 +22,8 @@ from terra_sdk.core.compact_bit_array import CompactBitArray
 from terra_sdk.core.fee import Fee
 from terra_sdk.core.mode_info import ModeInfo, ModeInfoMulti, ModeInfoSingle
 from terra_sdk.core.msg import Msg
-from terra_sdk.core.public_key import (
-    LegacyAminoMultisigPublicKey,
-    PublicKey,
-    SimplePublicKey,
-)
+from terra_sdk.core.public_key import (LegacyAminoMultisigPublicKey, PublicKey,
+                                       SimplePublicKey)
 from terra_sdk.core.signature_v2 import SignatureV2
 from terra_sdk.util.json import JSONSerializable
 
@@ -78,7 +76,7 @@ class Tx(JSONSerializable):
         return Tx_pb(
             body=self.body.to_proto(),
             auth_info=self.auth_info.to_proto(),
-            signatures=self.signatures
+            signatures=self.signatures,
         )
 
     @classmethod

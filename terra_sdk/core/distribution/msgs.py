@@ -5,18 +5,14 @@ from __future__ import annotations
 from typing import cast
 
 import attr
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgFundCommunityPool as MsgFundCommunityPool_pb,
-)
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgSetWithdrawAddress as MsgSetWithdrawAddress_pb,
-)
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgWithdrawDelegatorReward as MsgWithdrawDelegatorReward_pb,
-)
-from terra_proto.cosmos.distribution.v1beta1 import (
-    MsgWithdrawValidatorCommission as MsgWithdrawValidatorCommission_pb,
-)
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgFundCommunityPool as MsgFundCommunityPool_pb
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgSetWithdrawAddress as MsgSetWithdrawAddress_pb
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgWithdrawDelegatorReward as MsgWithdrawDelegatorReward_pb
+from terra_proto.cosmos.distribution.v1beta1 import \
+    MsgWithdrawValidatorCommission as MsgWithdrawValidatorCommission_pb
 
 from terra_sdk.core import AccAddress, Coins, ValAddress
 from terra_sdk.core.msg import Msg

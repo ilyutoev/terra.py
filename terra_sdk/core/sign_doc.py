@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import base64
 import json
+from typing import Optional
 
 import attr
 from terra_proto.cosmos.tx.v1beta1 import SignDoc as SignDoc_pb
 
 from terra_sdk.core.tx import AuthInfo, TxBody
 from terra_sdk.util.json import JSONSerializable
-from typing import Optional
 
 __all__ = ["SignDoc"]
 

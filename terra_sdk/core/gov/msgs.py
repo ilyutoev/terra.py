@@ -6,7 +6,8 @@ from typing import cast
 
 import attr
 from terra_proto.cosmos.gov.v1beta1 import MsgDeposit as MsgDeposit_pb
-from terra_proto.cosmos.gov.v1beta1 import MsgSubmitProposal as MsgSubmitProposal_pb
+from terra_proto.cosmos.gov.v1beta1 import \
+    MsgSubmitProposal as MsgSubmitProposal_pb
 from terra_proto.cosmos.gov.v1beta1 import MsgVote as MsgVote_pb
 
 from terra_sdk.core import AccAddress, Coins

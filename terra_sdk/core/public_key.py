@@ -8,7 +8,8 @@ from typing import Dict, List, Union
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
 from terra_proto.cosmos.crypto.ed25519 import PubKey as ValConsPubKey_pb
-from terra_proto.cosmos.crypto.multisig import LegacyAminoPubKey as LegacyAminoPubKey_pb
+from terra_proto.cosmos.crypto.multisig import \
+    LegacyAminoPubKey as LegacyAminoPubKey_pb
 from terra_proto.cosmos.crypto.secp256k1 import PubKey as SimplePubKey_pb
 
 from terra_sdk.util.json import JSONSerializable

@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import attr
-from terra_proto.ibc.applications.transfer.v1 import DenomTrace as DenomTrace_pb
+from terra_proto.ibc.applications.transfer.v1 import \
+    DenomTrace as DenomTrace_pb
 
 from terra_sdk.util.json import JSONSerializable
 

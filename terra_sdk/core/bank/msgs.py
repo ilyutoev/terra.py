@@ -78,7 +78,7 @@ class MsgSend(Msg):
         return MsgSend_pb(
             from_address=self.from_address,
             to_address=self.to_address,
-            amount=self.amount.to_proto()
+            amount=self.amount.to_proto(),
         )
 
     @classmethod
@@ -119,10 +119,7 @@ class MultiSendInput(JSONSerializable):
         )
 
     def to_proto(self) -> Input_pb:
-        return Input_pb(
-            address=str(self.address),
-            coins=self.coins.to_proto()
-        )
+        return Input_pb(address=str(self.address), coins=self.coins.to_proto())
 
 
 @attr.s
@@ -158,10 +155,7 @@ class MultiSendOutput(JSONSerializable):
         )
 
     def to_proto(self) -> Output_pb:
-        return Output_pb(
-            address=str(self.address),
-            coins=self.coins.to_proto()
-        )
+        return Output_pb(address=str(self.address), coins=self.coins.to_proto())
 
 
 def convert_input_list(data: list) -> List[MultiSendInput]:

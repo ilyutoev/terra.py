@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Any, Optional
 
 import attr
 from terra_proto.cosmos.tx.v1beta1 import Fee as Fee_pb
@@ -10,7 +10,6 @@ from terra_proto.cosmos.tx.v1beta1 import Fee as Fee_pb
 from terra_sdk.core.bech32 import AccAddress
 from terra_sdk.core.coins import Coins
 from terra_sdk.util.json import JSONSerializable
-from typing import Any
 
 __all__ = ["Fee"]
 
@@ -75,7 +74,7 @@ class Fee(JSONSerializable):
     @staticmethod
     def addr_to_str(addr: AccAddress) -> str:
         if not addr:
-            return ''
+            return ""
         return str(addr)
 
     @staticmethod

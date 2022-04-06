@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
-from terra_proto.ibc.core.client.v1 import MsgCreateClient as MsgCreateClient_pb
-from terra_proto.ibc.core.client.v1 import (
-    MsgSubmitMisbehaviour as MsgSubmitMisbehaviour_pb,
-)
-from terra_proto.ibc.core.client.v1 import MsgUpdateClient as MsgUpdateClient_pb
-from terra_proto.ibc.core.client.v1 import MsgUpgradeClient as MsgUpgradeClient_pb
+from terra_proto.ibc.core.client.v1 import \
+    MsgCreateClient as MsgCreateClient_pb
+from terra_proto.ibc.core.client.v1 import \
+    MsgSubmitMisbehaviour as MsgSubmitMisbehaviour_pb
+from terra_proto.ibc.core.client.v1 import \
+    MsgUpdateClient as MsgUpdateClient_pb
+from terra_proto.ibc.core.client.v1 import \
+    MsgUpgradeClient as MsgUpgradeClient_pb
 
 from terra_sdk.core.msg import Msg
 

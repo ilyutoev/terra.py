@@ -4,22 +4,11 @@ from typing import Optional
 
 import attr
 
-from terra_sdk.core import (
-    AccAddress,
-    AccPubKey,
-    ModeInfo,
-    ModeInfoSingle,
-    SignatureV2,
-    SignDoc,
-    ValAddress,
-    ValPubKey,
-)
+from terra_sdk.core import (AccAddress, AccPubKey, ModeInfo, ModeInfoSingle,
+                            SignatureV2, SignDoc, ValAddress, ValPubKey)
 from terra_sdk.core.bech32 import get_bech
-from terra_sdk.core.public_key import (
-    PublicKey,
-    address_from_public_key,
-    amino_pubkey_from_public_key,
-)
+from terra_sdk.core.public_key import (PublicKey, address_from_public_key,
+                                       amino_pubkey_from_public_key)
 from terra_sdk.core.signature_v2 import Descriptor
 from terra_sdk.core.signature_v2 import Single as SingleDescriptor
 from terra_sdk.core.tx import AuthInfo, SignerInfo, SignMode, Tx
@@ -143,7 +132,7 @@ class Key:
             data=Descriptor(
                 SingleDescriptor(
                     mode=SignMode.SIGN_MODE_LEGACY_AMINO_JSON,
-                    signature=(self.sign(sign_doc.to_amino_json()))
+                    signature=(self.sign(sign_doc.to_amino_json())),
                 )
             ),
             sequence=sign_doc.sequence,

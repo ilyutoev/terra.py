@@ -8,18 +8,16 @@ from typing import List, Optional
 import attr
 from betterproto.lib.google.protobuf import Any as Any_pb
 from dateutil import parser
-from terra_proto.cosmos.authz.v1beta1 import (
-    GenericAuthorization as GenericAuthorization_pb,
-)
+from terra_proto.cosmos.authz.v1beta1 import \
+    GenericAuthorization as GenericAuthorization_pb
 from terra_proto.cosmos.authz.v1beta1 import Grant as Grant_pb
-from terra_proto.cosmos.bank.v1beta1 import SendAuthorization as SendAuthorization_pb
+from terra_proto.cosmos.bank.v1beta1 import \
+    SendAuthorization as SendAuthorization_pb
 from terra_proto.cosmos.staking.v1beta1 import AuthorizationType
-from terra_proto.cosmos.staking.v1beta1 import (
-    StakeAuthorization as StakeAuthorization_pb,
-)
-from terra_proto.cosmos.staking.v1beta1 import (
-    StakeAuthorizationValidators as StakeAuthorizationValidators_pb,
-)
+from terra_proto.cosmos.staking.v1beta1 import \
+    StakeAuthorization as StakeAuthorization_pb
+from terra_proto.cosmos.staking.v1beta1 import \
+    StakeAuthorizationValidators as StakeAuthorizationValidators_pb
 
 from terra_sdk.core import AccAddress, Coin, Coins
 from terra_sdk.util.base import BaseTerraData
@@ -40,7 +38,8 @@ class Authorization(BaseTerraData):
 
     @staticmethod
     def from_amino(amino: dict) -> Authorization:
-        from terra_sdk.util.parse_authorization import parse_authorization_amino
+        from terra_sdk.util.parse_authorization import \
+            parse_authorization_amino
 
         return parse_authorization_amino(amino)
 
@@ -52,7 +51,8 @@ class Authorization(BaseTerraData):
 
     @staticmethod
     def from_proto(proto: Any_pb) -> Authorization:
-        from terra_sdk.util.parse_authorization import parse_authorization_proto
+        from terra_sdk.util.parse_authorization import \
+            parse_authorization_proto
 
         return parse_authorization_proto(proto)
 
