@@ -10,6 +10,7 @@ from terra_proto.cosmos.tx.v1beta1 import Fee as Fee_pb
 from terra_sdk.core.bech32 import AccAddress
 from terra_sdk.core.coins import Coins
 from terra_sdk.util.json import JSONSerializable
+from typing import Any
 
 __all__ = ["Fee"]
 
@@ -46,16 +47,16 @@ class Fee(JSONSerializable):
         return {
             "gas_limit": str(self.gas_limit),
             "amount": self.amount.to_data(),
-            "payer": str(self.payer),
-            "granter": str(self.granter),
+            "payer": self.payer,
+            "granter": self.granter,
         }
 
     def to_proto(self) -> Fee_pb:
         return Fee_pb(
             amount=self.amount.to_proto(),
             gas_limit=self.gas_limit,
-            payer=self.payer,
-            granter=self.granter,
+            payer=self.addr_to_str(self.payer),
+            granter=self.addr_to_str(self.granter),
         )
 
     @classmethod
@@ -63,10 +64,22 @@ class Fee(JSONSerializable):
         return cls(
             gas_limit=proto.gas_limit,
             amount=Coins.from_proto(proto.amount),
-            payer=proto.payer,
-            granter=proto.granter,
+            payer=cls.addr_from_str(proto.payer),
+            granter=cls.addr_from_str(proto.granter),
         )
 
     @property
     def gas_prices(self) -> Coins:
         return self.amount.to_dec_coins().div(self.gas_limit)
+
+    @staticmethod
+    def addr_to_str(addr: AccAddress) -> str:
+        if not addr:
+            return ''
+        return str(addr)
+
+    @staticmethod
+    def addr_from_str(addr: str) -> Optional[AccAddress]:
+        if not addr:
+            return None
+        return AccAddress(addr)

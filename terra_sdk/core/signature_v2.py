@@ -48,9 +48,9 @@ class Descriptor:
     def from_data(cls, data: dict) -> Descriptor:
         s = None
         m = None
-        if data["single"] is not None:
+        if 'single' in data:
             s = Single.from_data(data["single"])
-        if data["multi"] is not None:
+        if 'multi' in data:
             m = Multi.from_data(data["multi"])
         return cls(single=s, multi=m)
 
@@ -62,7 +62,7 @@ class Descriptor:
     def to_mode_info_and_signature(self) -> Tuple[ModeInfo, bytes]:
         if self.single is not None:
             sig_data = self.single
-            return [ModeInfo(single=ModeInfoSingle(sig_data.mode)), sig_data.signature]
+            return ModeInfo(single=ModeInfoSingle(sig_data.mode)), sig_data.signature
 
         if self.multi:
             sig_data = self.multi
@@ -73,14 +73,14 @@ class Descriptor:
                 mode_infos.append(mode_info)
                 signatures.append(sig_bytes)
             pb = MultiSignature_pb(signatures=signatures)
-            return [
+            return (
                 ModeInfo(
                     multi=ModeInfoMulti(
-                        bitarray=sig_data.bitarray, mode_infos=mode_infos
+                        sig_data.bitarray, mode_infos
                     )
                 ),
-                bytes(pb),  # base64.b64encode(bytes(pb)),
-            ]
+                bytes(pb)
+            )
 
         raise ValueError("invalid signature descriptor")
 

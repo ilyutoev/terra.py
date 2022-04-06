@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 
 import attr
@@ -9,6 +10,7 @@ from terra_proto.cosmos.tx.v1beta1 import SignDoc as SignDoc_pb
 
 from terra_sdk.core.tx import AuthInfo, TxBody
 from terra_sdk.util.json import JSONSerializable
+from typing import Optional
 
 __all__ = ["SignDoc"]
 
@@ -19,9 +21,9 @@ from terra_sdk.util.remove_none import remove_none
 class SignDoc(JSONSerializable):
     chain_id: str = attr.ib()
     account_number: int = attr.ib(converter=int)
-    sequence: int = attr.ib(converter=int)
     auth_info: AuthInfo = attr.ib()
     tx_body: TxBody = attr.ib()
+    sequence: Optional[int] = attr.ib(converter=int, default=None)
 
     def to_amino(self) -> dict:
         tx = self.tx_body
@@ -35,7 +37,16 @@ class SignDoc(JSONSerializable):
             else None,
             "fee": auth.fee.to_amino(),
             "msgs": [msg.to_amino() for msg in tx.messages],
-            "memo": tx.memo if tx.memo else "",
+            "memo": tx.memo or "",
+        }
+
+    def to_data(self) -> dict:
+        return {
+            "chain_id": self.chain_id,
+            "account_nubmer": self.account_number,
+            "sequence": self.sequence,
+            "auth_info": self.auth_info.to_data(),
+            "tx_body": self.tx_body.to_data(),
         }
 
     @classmethod
@@ -48,30 +59,21 @@ class SignDoc(JSONSerializable):
             tx_body=TxBody.from_data(data["tx_body"]),
         )
 
-    def to_data(self) -> dict:
-        return {
-            "chain_id": self.chain_id,
-            "account_nubmer": self.account_number,
-            "sequence": self.sequence,
-            "auth_info": self.auth_info.to_data(),
-            "tx_body": self.tx_body.to_data(),
-        }
+    def to_proto(self) -> SignDoc_pb:
+        return SignDoc_pb(
+            body_bytes=self.tx_body.to_bytes(),
+            auth_info_bytes=self.auth_info.to_bytes(),
+            chain_id=self.chain_id,
+            account_number=self.account_number,
+        )
 
     @classmethod
     def from_proto(cls, proto: SignDoc_pb) -> SignDoc:
         return cls(
             chain_id=proto.chain_id,
             account_number=proto.account_number,
-            auth_info=AuthInfo.from_proto(proto.auth_info_bytes),
-            tx_body=TxBody.from_proto(proto.body_bytes),
-        )
-
-    def to_proto(self) -> SignDoc_pb:
-        return SignDoc_pb(
-            body_bytes=bytes(self.tx_body.to_proto()),
-            auth_info_bytes=bytes(self.auth_info.to_proto()),
-            chain_id=self.chain_id,
-            account_number=self.account_number,
+            auth_info=AuthInfo.from_bytes(proto.auth_info_bytes),
+            tx_body=TxBody.from_bytes(proto.body_bytes),
         )
 
     def to_bytes(self) -> bytes:

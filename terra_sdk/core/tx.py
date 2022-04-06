@@ -71,15 +71,15 @@ class Tx(JSONSerializable):
         return {
             "body": self.body.to_data(),
             "auth_info": self.auth_info.to_data(),
-            "signatures": [base64.b64encode(sig).decode() for sig in self.signatures],
+            "signatures": self.signatures,
         }
 
     def to_proto(self) -> Tx_pb:
-        proto = Tx_pb()
-        proto.body = self.body.to_proto()
-        proto.auth_info = self.auth_info.to_proto()
-        proto.signatures = [sig for sig in self.signatures]
-        return proto
+        return Tx_pb(
+            body=self.body.to_proto(),
+            auth_info=self.auth_info.to_proto(),
+            signatures=self.signatures
+        )
 
     @classmethod
     def from_data(cls, data: dict) -> Tx:
@@ -99,12 +99,10 @@ class Tx(JSONSerializable):
 
     @classmethod
     def from_bytes(cls, txb: bytes) -> Tx:
-        proto = Tx_pb().parse(txb)
-        c = cls.from_proto(proto)
-        return c
+        return cls.from_proto(Tx_pb().parse(txb))
 
     def encode(self) -> str:
-        return base64.b64encode(self.to_proto().SerializeToString()).decode()
+        return base64.b64encode(bytes(self.to_proto())).decode()
 
     @classmethod
     def from_encoded(cls, amino: str) -> Tx:
@@ -143,7 +141,7 @@ class Tx(JSONSerializable):
             self.auth_info.signer_infos.append(signer_info)
             self.signatures.append(b" ")
 
-    def clear_signature(self):
+    def clear_signatures(self):
         self.signatures.clear()
         self.auth_info.signer_infos.clear()
 
@@ -151,7 +149,6 @@ class Tx(JSONSerializable):
         for sig in signatures:
             mode_info, sig_bytes = sig.data.to_mode_info_and_signature()
             self.signatures.append(sig_bytes)
-            # self.signatures.append(base64.b64decode(sig_bytes))
             self.auth_info.signer_infos.append(
                 SignerInfo(sig.public_key, mode_info, sig.sequence)
             )
@@ -175,7 +172,7 @@ class TxBody(JSONSerializable):
         return {
             "messages": [m.to_data() for m in self.messages],
             "memo": self.memo if self.memo else "",
-            "timeout_height": self.timeout_height if self.timeout_height else "0",
+            "timeout_height": self.timeout_height if self.timeout_height else 0,
         }
 
     def to_proto(self) -> TxBody_pb:
@@ -184,6 +181,13 @@ class TxBody(JSONSerializable):
             memo=self.memo or "",
             timeout_height=self.timeout_height,
         )
+
+    @classmethod
+    def from_bytes(cls, bts: bytes) -> TxBody:
+        return cls.from_proto(TxBody_pb().parse(bts))
+
+    def to_bytes(self) -> bytes:
+        return bytes(self.to_proto())
 
     @classmethod
     def from_data(cls, data: dict) -> TxBody:
@@ -223,17 +227,17 @@ class AuthInfo(JSONSerializable):
             "fee": self.fee.to_data(),
         }
 
-    def to_proto(self) -> AuthInfo_pb:
-        return AuthInfo_pb(
-            signer_infos=[signer.to_proto() for signer in self.signer_infos],
-            fee=self.fee.to_proto(),
-        )
-
     @classmethod
     def from_data(cls, data: dict) -> AuthInfo:
         return cls(
             [SignerInfo.from_data(m) for m in data["signer_infos"]],
             Fee.from_data(data["fee"]),
+        )
+
+    def to_proto(self) -> AuthInfo_pb:
+        return AuthInfo_pb(
+            signer_infos=[signer.to_proto() for signer in self.signer_infos],
+            fee=self.fee.to_proto(),
         )
 
     @classmethod
@@ -242,6 +246,13 @@ class AuthInfo(JSONSerializable):
             [SignerInfo.from_proto(m) for m in proto.signer_infos],
             Fee.from_proto(proto.fee),
         )
+
+    def to_bytes(self) -> bytes:
+        return bytes(self.to_proto())
+
+    @classmethod
+    def from_bytes(cls, bts: bytes) -> AuthInfo:
+        return cls.from_proto(AuthInfo_pb().parse(bts))
 
 
 @attr.s

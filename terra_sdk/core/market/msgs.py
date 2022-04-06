@@ -8,6 +8,7 @@ from terra_proto.terra.market.v1beta1 import MsgSwapSend as MsgSwapSend_pb
 
 from terra_sdk.core import AccAddress, Coin
 from terra_sdk.core.msg import Msg
+from typing import Dict, Any
 
 __all__ = ["MsgSwap", "MsgSwapSend"]
 
@@ -41,6 +42,14 @@ class MsgSwap(Msg):
                 "offer_coin": self.offer_coin.to_amino(),
                 "ask_denom": self.ask_denom,
             },
+        }
+
+    def to_data(self) -> Dict[str, Any]:
+        return {
+            "@type": self.type_url,
+            "trader": self.trader,
+            "offer_coin": self.offer_coin.to_data(),
+            "ask_denom": self.ask_denom,
         }
 
     @classmethod
