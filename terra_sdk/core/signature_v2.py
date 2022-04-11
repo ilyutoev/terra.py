@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 from typing import List, Optional, Tuple
 
 import attr
@@ -87,10 +88,10 @@ class Single:  # FIXME: SignModeTo/FromJSON
 
     @classmethod
     def from_data(cls, data: dict) -> Single:
-        return cls(mode=data["mode"], signature=data["signature"])
+        return cls(mode=data["mode"], signature=base64.b64decode(data["signature"].encode()))
 
     def to_data(self) -> dict:
-        return {"mode": self.mode, "signature": self.signature}
+        return {"mode": self.mode, "signature": base64.b64encode(self.signature).decode()}
 
 
 @attr.s
