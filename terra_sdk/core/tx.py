@@ -26,6 +26,7 @@ from terra_sdk.core.public_key import (LegacyAminoMultisigPublicKey, PublicKey,
                                        SimplePublicKey)
 from terra_sdk.core.signature_v2 import SignatureV2
 from terra_sdk.util.json import JSONSerializable
+from terra_sdk.util.hash import hash_amino
 
 __all__ = [
     "SignMode",
@@ -101,6 +102,10 @@ class Tx(JSONSerializable):
 
     def encode(self) -> str:
         return base64.b64encode(bytes(self.to_proto())).decode()
+
+    @property
+    def hash(self) -> str:
+        return hash_amino(self.encode()).upper()
 
     @classmethod
     def from_encoded(cls, amino: str) -> Tx:
