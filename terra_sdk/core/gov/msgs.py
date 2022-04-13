@@ -136,16 +136,16 @@ class MsgDeposit(Msg):
     def to_proto(self) -> MsgDeposit_pb:
         return MsgDeposit_pb(
             proposal_id=self.proposal_id,
-            depositor=self.depositor,
+            depositor=str(self.depositor),
             amount=self.amount.to_proto(),
         )
 
     @classmethod
     def from_proto(cls, proto: MsgDeposit_pb) -> MsgDeposit:
         return cls(
-            proposal_id=proto["proposal_id"],
-            depositor=proto["depositor"],
-            amount=Coins.from_proto(proto["amount"]),
+            proposal_id=proto.proposal_id,
+            depositor=cast(AccAddress, proto.depositor),
+            amount=Coins.from_proto(proto.amount),
         )
 
 
