@@ -84,6 +84,9 @@ class PublicKey(JSONSerializable, ABC):
             return ValConsPubKey.unpack_any(proto)
         elif type_url == LegacyAminoMultisigPublicKey.type_url:
             return LegacyAminoMultisigPublicKey.unpack_any(proto)
+        elif not type_url:
+            return EmptyPublicKey("")
+
         raise TypeError("could not marshal PublicKey: type is incorrect")
 
     @classmethod
@@ -339,3 +342,56 @@ class LegacyAminoMultisigPublicKey(PublicKey):
 
     def pubkey_address(self) -> str:
         return get_bech("terrapub", str(self.encode_amino_pubkey()))
+
+
+@attr.s
+class EmptyPublicKey(PublicKey):
+    """Data object holding the EMPTY public key component of an account or signature."""
+
+    type_amino = ""
+    """"""
+
+    type_url = ""
+    """Normal signature public key type."""
+
+    key: str = attr.ib()
+
+    def to_amino(self) -> Dict[str, str]:
+        return {"type": "", "value": ""}
+
+    def to_data(self) -> Dict[str, str]:
+        return {"@type": "", "key": ""}
+
+    @classmethod
+    def from_data(cls, data: Dict[str, str]) -> EmptyPublicKey:
+        return cls("")
+
+    @classmethod
+    def from_proto(cls, proto: Any_pb) -> EmptyPublicKey:
+        return cls(key="")
+
+    @classmethod
+    def unpack_any(cls, proto: Any_pb) -> EmptyPublicKey:
+        return cls(key="")
+
+    @classmethod
+    def from_amino(cls, amino: Dict[str, str]) -> EmptyPublicKey:
+        return cls(key="")
+
+    def to_proto(self) -> SimplePubKey_pb:
+        return SimplePubKey_pb(key=b"")
+
+    def get_type(self) -> str:
+        return ""
+
+    def pack_any(self) -> Any_pb:
+        return Any_pb(type_url="", value=b"")
+
+    def encode_amino_pubkey(self) -> bytearray:
+        return bytearray(b"")
+
+    def raw_address(self) -> str:
+        return ""
+
+    def address(self) -> str:
+        return ""
