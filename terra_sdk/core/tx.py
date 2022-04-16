@@ -18,17 +18,17 @@ from terra_proto.cosmos.tx.v1beta1 import SignerInfo as SignerInfo_pb
 from terra_proto.cosmos.tx.v1beta1 import Tx as Tx_pb
 from terra_proto.cosmos.tx.v1beta1 import TxBody as TxBody_pb
 
+from terra_sdk.core.bank.msgs import MsgMultiSend, MsgSend
 from terra_sdk.core.compact_bit_array import CompactBitArray
 from terra_sdk.core.fee import Fee
+from terra_sdk.core.market.msgs import MsgSwapSend
 from terra_sdk.core.mode_info import ModeInfo, ModeInfoMulti, ModeInfoSingle
 from terra_sdk.core.msg import Msg
 from terra_sdk.core.public_key import (LegacyAminoMultisigPublicKey, PublicKey,
                                        SimplePublicKey)
 from terra_sdk.core.signature_v2 import SignatureV2
-from terra_sdk.util.json import JSONSerializable
 from terra_sdk.util.hash import hash_amino
-from terra_sdk.core.bank.msgs import MsgSend, MsgMultiSend
-from terra_sdk.core.market.msgs import MsgSwapSend
+from terra_sdk.util.json import JSONSerializable
 
 __all__ = [
     "SignMode",
@@ -162,9 +162,14 @@ class Tx(JSONSerializable):
     def parse_transfer(cls, encoded: str) -> Optional[Tx]:
         proto = Tx_pb().parse(base64.b64decode(encoded))
         for msg in proto.body.messages:
-            if msg.type_url in {MsgSend.type_url, MsgMultiSend.type_url, MsgSwapSend.type_url}:
+            if msg.type_url in {
+                MsgSend.type_url,
+                MsgMultiSend.type_url,
+                MsgSwapSend.type_url,
+            }:
                 return cls.from_proto(proto)
         return None
+
 
 @attr.s
 class TxBody(JSONSerializable):

@@ -88,10 +88,15 @@ class Single:  # FIXME: SignModeTo/FromJSON
 
     @classmethod
     def from_data(cls, data: dict) -> Single:
-        return cls(mode=data["mode"], signature=base64.b64decode(data["signature"].encode()))
+        return cls(
+            mode=data["mode"], signature=base64.b64decode(data["signature"].encode())
+        )
 
     def to_data(self) -> dict:
-        return {"mode": self.mode, "signature": base64.b64encode(self.signature).decode()}
+        return {
+            "mode": self.mode,
+            "signature": base64.b64encode(self.signature).decode(),
+        }
 
 
 @attr.s
