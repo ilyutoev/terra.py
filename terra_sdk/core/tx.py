@@ -27,6 +27,8 @@ from terra_sdk.core.public_key import (LegacyAminoMultisigPublicKey, PublicKey,
 from terra_sdk.core.signature_v2 import SignatureV2
 from terra_sdk.util.json import JSONSerializable
 from terra_sdk.util.hash import hash_amino
+from terra_sdk.core.bank.msgs import MsgSend, MsgMultiSend
+from terra_sdk.core.market.msgs import MsgSwapSend
 
 __all__ = [
     "SignMode",
@@ -156,6 +158,13 @@ class Tx(JSONSerializable):
                 SignerInfo(sig.public_key, mode_info, sig.sequence)
             )
 
+    @classmethod
+    def parse_transfer(cls, encoded: str) -> Optional[Tx]:
+        proto = Tx_pb().parse(base64.b64decode(encoded))
+        for msg in proto.body.messages:
+            if msg.type_url in {MsgSend.type_url, MsgMultiSend.type_url, MsgSwapSend.type_url}:
+                return cls.from_proto(proto)
+        return None
 
 @attr.s
 class TxBody(JSONSerializable):
